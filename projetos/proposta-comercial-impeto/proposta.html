@@ -4,6 +4,15 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <link rel="icon" href="data:,">
+<script>
+/* Modo leve: aparelhos de toque (celular e tablet) perdem os efeitos graficos mais caros.
+   ?leve=1 forca o modo leve em qualquer aparelho; ?leve=0 forca o visual completo. */
+(function(){
+  var q=location.search, toque=false;
+  try{ toque=matchMedia("(hover:none) and (pointer:coarse)").matches; }catch(e){}
+  if(/[?&]leve=1/.test(q) || (toque && !/[?&]leve=0/.test(q))) document.documentElement.classList.add("leve");
+})();
+</script>
 <title>Praxis · Proposta comercial — Rede Ímpeto</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -378,6 +387,25 @@ td.lead{color:var(--txt);font-weight:400}
   .anim{transition:none!important;opacity:1;transform:none}
   *,*::before,*::after{animation:none!important}
 }
+
+/* ---------- modo leve (celular e tablet) ----------
+   O WebKit do iPhone encerra a pagina quando ha muito desfoque em camadas grandes: backdrop-filter e filter no
+   mesmo elemento, drop-shadow em titulos, tudo dentro de um palco de 1600x900 numa tela de 3x. Na tela 6 os
+   tres quadros de fase juntavam backdrop-filter + filter:saturate animado. Aqui os efeitos mais caros saem
+   e o desenho continua o mesmo. No computador, nada disto se aplica. */
+html.leve .card{-webkit-backdrop-filter:none;backdrop-filter:none;background:var(--glass),rgba(12,18,36,.5)}
+html.leve .card::after{filter:none;box-shadow:0 0 10px var(--ac)}
+html.leve .phases article{filter:none;
+  transition:flex-grow .72s cubic-bezier(.22,.84,.24,1),opacity .5s ease}
+html.leve h1,html.leve h2,html.leve .trio .n,html.leve .metrics .v,html.leve .cover .strip .v,
+html.leve tr.total .tnum,html.leve .slider .bigval{filter:none}
+html.leve .glowline,html.leve #pbsvg circle{filter:none}
+html.leve .nav button{-webkit-backdrop-filter:none;backdrop-filter:none}
+html.leve .grain{display:none}
+html.leve #glow{animation:none}
+html.leve .mood{will-change:auto}
+@keyframes numInLeve{0%{opacity:0;transform:translateY(24px) scale(1.045)}100%{opacity:1;transform:none}}
+html.leve .is-active .figure{animation-name:numInLeve}
 
 /* ---------- aviso para girar o celular ----------
    A proposta e um palco horizontal 16:9. Com o celular em pe ela ficaria pequena demais para ler. */
