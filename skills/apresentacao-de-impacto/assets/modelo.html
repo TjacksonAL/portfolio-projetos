@@ -1,0 +1,900 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<!--
+  MODELO DE APRESENTAÇÃO DE IMPACTO
+  Mapa do arquivo:
+    1. CSS  ......... tokens da marca (TROQUE AQUI), palco, luzes, vidro, moldura,
+                      tipografia, peças de conteúdo, simulador, animação
+    2. TELAS ........ 6 exemplos: capa, três números, gráfico, fases, retorno, fechamento
+    3. JS ........... espinha aritmética (TROQUE AQUI), navegação, gráficos, simulador, ícones
+
+  Procure por "TROQUE" para achar tudo que precisa mudar.
+  Depois de editar, rode: node scripts/conferir_telas.mjs este-arquivo.html
+-->
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cliente · Proposta comercial</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,200;6..72,300;6..72,400;6..72,500&family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ============ 1. TOKENS — TROQUE AQUI PARA OUTRA MARCA ============ */
+:root{
+  --bg-0:#070A13;
+  --txt:#EFF2F9;   --txt-2:#A9B3CA;  --txt-3:#6E7A98;
+  --gold:#F5B24A;  --rose:#FF6B5A;   --mint:#39DEAE;
+  --violet:#8B6BFF; --blue:#5B8DEF;
+  --grad-oxide:linear-gradient(145deg,#FFFFFF 0%,#FFC4B8 34%,#FF6B5A 74%,#D6402F 100%);
+  --grad-brass:linear-gradient(145deg,#FFFFFF 0%,#FFE6B8 34%,#F5B24A 74%,#D4842A 100%);
+  --grad-moss:linear-gradient(145deg,#FFFFFF 0%,#BFF6E3 34%,#39DEAE 74%,#12A17C 100%);
+  --grad-cool:linear-gradient(140deg,#FFFFFF 0%,#DCE4F5 52%,#95A2C0 100%);
+  --glass:linear-gradient(158deg,rgba(255,255,255,.085),rgba(255,255,255,.022) 58%,rgba(255,255,255,.045));
+  --shadow:0 30px 64px -26px rgba(0,0,0,.85), 0 4px 14px -6px rgba(0,0,0,.5);
+  --serif:"Newsreader","Iowan Old Style",Georgia,serif;
+  --sans:"IBM Plex Sans",-apple-system,"Segoe UI",Helvetica,Arial,sans-serif;
+  --mono:"IBM Plex Mono","SFMono-Regular",Menlo,Consolas,monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:#04060C;overflow:hidden}
+body{font-family:var(--sans);color:var(--txt);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+
+/* ============ PALCO ============ */
+#stage{position:absolute;top:50%;left:50%;width:1600px;height:900px;transform-origin:50% 50%;
+  background:var(--bg-0);overflow:hidden}
+.mood{position:absolute;inset:-14%;z-index:0;opacity:0;transition:opacity 1.25s cubic-bezier(.4,0,.2,1)}
+.mood.on{opacity:1}
+.mood-neutral{background:
+  radial-gradient(46% 52% at 16% 12%, rgba(124,92,255,.42), transparent 66%),
+  radial-gradient(44% 48% at 84% 8%,  rgba(245,178,74,.30), transparent 66%),
+  radial-gradient(52% 56% at 72% 92%, rgba(58,110,255,.30), transparent 68%)}
+.mood-problem{background:
+  radial-gradient(48% 54% at 18% 10%, rgba(255,107,90,.40), transparent 66%),
+  radial-gradient(44% 46% at 86% 14%, rgba(196,64,120,.32), transparent 66%),
+  radial-gradient(54% 58% at 70% 94%, rgba(124,60,190,.30), transparent 68%)}
+.mood-gain{background:
+  radial-gradient(48% 52% at 14% 14%, rgba(57,222,174,.34), transparent 66%),
+  radial-gradient(46% 50% at 86% 10%, rgba(245,178,74,.34), transparent 66%),
+  radial-gradient(54% 58% at 74% 92%, rgba(60,120,255,.30), transparent 68%)}
+#glow{position:absolute;inset:-14%;z-index:0;animation:drift 44s ease-in-out infinite alternate}
+@keyframes drift{0%{transform:translate3d(0,0,0) scale(1)}
+  50%{transform:translate3d(-1.6%,1.4%,0) scale(1.045)}
+  100%{transform:translate3d(1.4%,-1.2%,0) scale(1.02)}}
+#stage::before{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
+  background-image:linear-gradient(rgba(255,255,255,.030) 1px,transparent 1px),
+                   linear-gradient(90deg,rgba(255,255,255,.030) 1px,transparent 1px);
+  background-size:100px 100px;
+  -webkit-mask-image:radial-gradient(115% 90% at 60% 40%,#000 12%,transparent 76%);
+  mask-image:radial-gradient(115% 90% at 60% 40%,#000 12%,transparent 76%)}
+#stage::after{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:linear-gradient(180deg,rgba(255,255,255,.07),transparent 3px),
+    radial-gradient(130% 112% at 50% 46%,transparent 44%,rgba(4,6,12,.72) 100%)}
+.grain{position:absolute;inset:-40px;z-index:4;pointer-events:none;opacity:.05;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size:200px 200px}
+
+/* ============ CARTÃO DE VIDRO ============ */
+.card{--ac:var(--gold);position:relative;background:var(--glass);border:1px solid rgba(255,255,255,.11);
+  border-radius:22px;backdrop-filter:blur(26px) saturate(165%);-webkit-backdrop-filter:blur(26px) saturate(165%);
+  box-shadow:var(--shadow);padding:28px 32px}
+.card::after{content:"";position:absolute;left:20px;right:20px;top:-1px;height:2px;border-radius:2px;pointer-events:none;
+  background:linear-gradient(90deg,transparent,var(--ac) 20%,var(--ac) 80%,transparent);
+  filter:drop-shadow(0 0 6px var(--ac)) drop-shadow(0 0 16px var(--ac));opacity:.92}
+.ac-gold{--ac:var(--gold)} .ac-rose{--ac:var(--rose)} .ac-mint{--ac:var(--mint)}
+.ac-violet{--ac:var(--violet)} .ac-blue{--ac:var(--blue)}
+.ico{position:absolute;top:24px;right:26px;width:34px;height:34px;color:var(--ac);opacity:.62;pointer-events:none}
+.card.tight .ico{top:18px;right:20px;width:28px;height:28px}
+/* o conteúdo do topo desvia do ícone; ao criar regra mais específica, reponha este padding */
+.card > :first-child:not(svg):not(table):not(.slider):not(.graf):not(.metrics),
+.card > :nth-child(2):not(svg):not(li):not(.slider):not(.graf):not(table):not(.metrics){padding-right:56px}
+.card > .slider,.card > .metrics,.card > .graf,.card > table{padding-right:0}
+.card.tight{padding:20px 24px}
+
+/* ============ MOLDURA ============ */
+.frame{position:absolute;inset:0;pointer-events:none;z-index:5}
+.mark{position:absolute;top:50px;left:88px;font-family:var(--mono);font-size:14px;letter-spacing:.42em;text-transform:uppercase}
+.mark i{font-style:normal;color:var(--gold)}
+.doc{position:absolute;top:50px;right:88px;font-family:var(--mono);font-size:13px;letter-spacing:.2em;
+  color:var(--txt-3);text-transform:uppercase;text-align:right;line-height:1.5}
+.foot-label{position:absolute;bottom:50px;left:88px;font-family:var(--mono);font-size:13px;letter-spacing:.2em;
+  color:var(--txt-3);text-transform:uppercase;transition:opacity .4s}
+.counter{position:absolute;bottom:44px;right:88px;font-family:var(--mono);font-size:14px;letter-spacing:.16em;color:var(--txt-3)}
+.counter b{color:var(--gold);font-weight:500}
+.ruler{position:absolute;bottom:32px;left:88px;right:88px;height:14px}
+.ruler .base{position:absolute;left:0;right:0;bottom:0;height:1px;background:rgba(255,255,255,.12)}
+.ruler .tick{position:absolute;bottom:0;width:2px;border-radius:2px;height:5px;background:rgba(255,255,255,.22);
+  transition:height .45s cubic-bezier(.2,.7,.2,1),background .45s,box-shadow .45s}
+.ruler .tick.done{background:rgba(245,178,74,.5)}
+.ruler .tick.now{height:13px;background:var(--gold);box-shadow:0 0 12px rgba(245,178,74,.9)}
+
+/* ============ TELAS ============ */
+.slide{position:absolute;inset:0;padding:112px 88px 100px;opacity:0;visibility:hidden;z-index:2;display:flex;flex-direction:column}
+.slide.is-active{opacity:1;visibility:visible;z-index:3}
+.anim{opacity:0;transform:translateY(18px);transition:opacity .66s cubic-bezier(.2,.7,.2,1),transform .66s cubic-bezier(.2,.7,.2,1)}
+.is-active .anim{opacity:1;transform:none;transition-delay:var(--d,0s)}
+
+/* ============ TIPOGRAFIA ============ */
+.eyebrow{font-family:var(--mono);font-size:14px;letter-spacing:.24em;text-transform:uppercase;color:var(--gold)}
+h1,h2{background-image:var(--grad-cool);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent}
+h1{font-family:var(--serif);font-weight:200;font-size:112px;line-height:.94;letter-spacing:-.022em}
+h2{font-family:var(--serif);font-weight:200;font-size:56px;line-height:1.06;letter-spacing:-.018em}
+h2 em,h1 em{font-style:italic;font-weight:300;background-image:var(--grad-brass);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.lede{font-size:21px;line-height:1.5;font-weight:300;color:var(--txt-2);max-width:112ch}
+.note{font-family:var(--mono);font-size:14px;line-height:1.6;color:var(--txt-3)}
+.num{font-family:var(--serif);font-weight:200;letter-spacing:-.03em;font-variant-numeric:tabular-nums;line-height:.86}
+.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.head{margin-bottom:28px}
+.head .eyebrow{margin-bottom:16px;display:block}
+.head .lede{margin-top:14px}
+.g,.gr,.gg{-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent}
+.g{background-image:var(--grad-brass)} .gr{background-image:var(--grad-oxide)} .gg{background-image:var(--grad-cool)}
+h1,h2,.trio .n,.metrics .v,.cover .strip .v,tr.total .tnum,.slider .bigval{filter:drop-shadow(0 14px 30px rgba(0,0,0,.6))}
+
+/* ============ PEÇAS DE CONTEÚDO ============ */
+.graf{display:block;width:100%;height:auto}
+.lbl{font-family:var(--mono);font-size:13px;letter-spacing:.2em;text-transform:uppercase;color:var(--txt-3);margin-bottom:14px}
+.qtit{font-family:var(--sans);font-weight:500;font-size:23px;line-height:1.3;letter-spacing:-.012em;color:var(--txt);margin-bottom:12px}
+.qtxt{font-size:17.5px;line-height:1.6;font-weight:300;color:var(--txt-2)}
+.qtxt b,.qtxt strong{font-weight:500;color:var(--txt)}
+.conta{margin-top:auto;padding-top:14px;border-top:1px solid rgba(255,255,255,.085);
+  font-family:var(--mono);font-size:13.5px;line-height:1.62;color:var(--txt-3)}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;flex:1;align-items:stretch;min-height:0}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:22px;flex:1;align-items:stretch;min-height:0}
+.g3 > .card,.g2 > .card{display:flex;flex-direction:column}
+.col{display:flex;flex-direction:column;gap:22px;min-height:0}
+.col > .card{display:flex;flex-direction:column}
+.src{margin-top:auto;padding-top:18px;font-family:var(--mono);font-size:14px;color:var(--txt-2);max-width:126ch;line-height:1.6}
+.src b,.src strong{color:var(--txt);font-weight:500}
+
+/* capa */
+.cover{justify-content:center}
+.cover .grid{display:grid;grid-template-columns:1fr 660px;gap:70px;align-items:center}
+.cover h1{margin:24px 0 26px}
+.cover .sub{font-size:23px;line-height:1.45;font-weight:300;color:var(--txt-2);max-width:30ch}
+.cover .strip{position:absolute;left:88px;right:88px;bottom:104px;display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+.cover .strip .k{font-family:var(--mono);font-size:13px;letter-spacing:.2em;text-transform:uppercase;color:var(--txt-3);margin-bottom:10px}
+.cover .strip .v{font-family:var(--serif);font-size:34px;font-weight:300;letter-spacing:-.02em}
+
+/* três números */
+.trio{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;flex:1;align-items:stretch;min-height:0}
+.trio > div{display:flex;flex-direction:column}
+.trio .k{font-family:var(--mono);font-size:13px;letter-spacing:.2em;text-transform:uppercase;color:var(--txt-3);margin-bottom:18px}
+.trio .n{font-size:104px;margin-bottom:2px}
+.trio .n small{font-size:40px;letter-spacing:0}
+.trio .t{font-size:18.5px;line-height:1.52;font-weight:300;color:var(--txt-2);margin:16px 0 14px}
+.trio .t b,.trio .t strong{font-weight:500;color:var(--txt)}
+
+/* fases */
+.phases{display:flex;gap:20px;margin-top:20px;flex:1;min-height:0;align-items:stretch}
+.phases article{flex:.7 1 0;min-width:0;min-height:0;display:flex;flex-direction:column;cursor:pointer;opacity:.34;filter:saturate(.35);
+  transition:flex-grow .72s cubic-bezier(.22,.84,.24,1),opacity .5s ease,filter .5s ease}
+.phases article.open{flex:2.5 1 0;opacity:1;filter:none}
+.phases article ul{opacity:0;transform:translateY(14px);pointer-events:none;flex:0 0 0;max-height:0;overflow:hidden;
+  transition:opacity .4s ease,transform .5s cubic-bezier(.2,.8,.2,1)}
+.phases article.open ul{opacity:1;transform:none;transition-delay:.2s;flex:1 1 auto;max-height:none;overflow:visible;
+  display:flex;flex-direction:column;justify-content:center}
+.phases article h3{transition:font-size .6s cubic-bezier(.22,.84,.24,1)}
+.phases article:not(.open) h3{font-size:26px}
+.phases .tag{display:flex;align-items:baseline;gap:14px;margin-bottom:16px}
+.phases article:not(.open) .tag{flex-direction:column;gap:5px}
+.phases .tag i{font-style:normal;font-family:var(--mono);font-size:14px;letter-spacing:.2em;color:var(--gold)}
+.phases .tag span{font-family:var(--mono);font-size:13px;letter-spacing:.16em;color:var(--txt-3);text-transform:uppercase}
+.phases h3{font-family:var(--serif);font-weight:300;font-size:33px;letter-spacing:-.012em;margin-bottom:12px;color:var(--txt)}
+.phases ul{list-style:none}
+.phases li{font-size:17.5px;line-height:1.5;font-weight:300;color:var(--txt-2);padding:10px 0 10px 20px;position:relative}
+.phases li::before{content:"";position:absolute;left:0;top:18px;width:6px;height:2px;border-radius:2px;background:var(--gold);opacity:.7}
+
+/* tabela */
+table{width:100%;border-collapse:collapse}
+th,td{text-align:left;padding:11px 20px;font-size:17.5px;font-weight:300;color:var(--txt-2);border-bottom:1px solid rgba(255,255,255,.07)}
+th{font-family:var(--mono);font-size:13px;letter-spacing:.18em;text-transform:uppercase;color:var(--txt-3);font-weight:400;border-bottom:1px solid rgba(255,255,255,.13)}
+td:first-child,th:first-child{padding-left:0}
+td:last-of-type,th:last-of-type{padding-right:56px}
+.tnum{font-family:var(--mono);font-variant-numeric:tabular-nums;text-align:right;color:var(--txt)}
+th.tnum{text-align:right}
+tr.total td{border-bottom:0;border-top:1px solid rgba(255,255,255,.13);padding-top:16px;color:var(--txt);font-size:19px}
+tr.total .tnum{font-family:var(--serif);font-size:36px;font-weight:300;letter-spacing:-.02em}
+td.lead{color:var(--txt);font-weight:400}
+
+/* ============ SIMULADOR ============ */
+.rowtop{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:2px}
+.rlabel{font-family:var(--mono);font-size:13px;letter-spacing:.2em;color:var(--txt-3);text-transform:uppercase}
+.reset{font-family:var(--mono);font-size:12.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--txt-3);
+  background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);border-radius:999px;cursor:pointer;
+  padding:7px 14px;opacity:0;pointer-events:none;transition:.25s}
+.reset.on{opacity:1;pointer-events:auto}
+.reset:hover{color:var(--gold);border-color:rgba(245,178,74,.5)}
+.slider{position:relative;height:108px}
+.slider .bigval{position:absolute;top:0;left:calc(16px + var(--pv,0)*(100% - 32px));transform:translateX(-50%);
+  font-family:var(--serif);font-weight:200;font-size:54px;line-height:1;letter-spacing:-.03em;
+  font-variant-numeric:tabular-nums;white-space:nowrap;
+  -webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent;
+  background-image:var(--grad-brass)}
+.slider .track{position:absolute;left:0;right:0;top:82px;height:14px;border-radius:999px;background:rgba(255,255,255,.07);
+  box-shadow:inset 0 1px 3px rgba(0,0,0,.55)}
+.slider .fill{position:absolute;left:0;top:0;bottom:0;border-radius:999px;
+  width:calc(16px + var(--p,0)*(100% - 32px));transition:background .35s,box-shadow .35s}
+.slider .paytick{position:absolute;top:70px;left:calc(16px + var(--pt,.2)*(100% - 32px));width:3px;height:38px;border-radius:3px;
+  background:var(--mint);box-shadow:0 0 14px rgba(57,222,174,.75)}
+.slider .needle{position:absolute;top:66px;left:calc(16px + var(--p,0)*(100% - 32px));transform:translateX(-50%);
+  width:8px;height:46px;border-radius:999px;background:var(--txt);box-shadow:0 6px 18px rgba(0,0,0,.6);transition:background .35s}
+.slider input[type=range]{position:absolute;left:0;right:0;top:58px;width:100%;height:62px;margin:0;opacity:0;
+  cursor:ew-resize;-webkit-appearance:none;appearance:none;background:transparent}
+.slider input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:32px;height:62px;background:#fff}
+.slider input[type=range]::-moz-range-thumb{width:32px;height:62px;border:0;border-radius:0;background:#fff}
+.scale{position:relative;height:34px}
+.scale .s{position:absolute;top:0}
+.scale .s b{display:block;font-family:var(--mono);font-size:15px;font-weight:400;color:var(--txt);margin-bottom:6px}
+.scale .s span{font-family:var(--mono);font-size:12.5px;letter-spacing:.12em;color:var(--txt-3);white-space:nowrap}
+.scale .l{left:0} .scale .r{right:0;text-align:right}
+.scale .mk{left:calc(16px + var(--pt,.2)*(100% - 32px));margin-left:14px}
+.scale .mk b,.scale .mk span{color:var(--mint)}
+.verdict{display:flex;gap:15px;align-items:flex-start;margin-top:12px;padding:14px 22px;border-radius:16px;
+  font-size:19px;line-height:1.45;font-weight:300;transition:color .35s,background .35s,border-color .35s;
+  border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.04)}
+.verdict i{flex:0 0 10px;height:10px;margin-top:8px;border-radius:3px;background:currentColor;font-style:normal;box-shadow:0 0 14px currentColor}
+.verdict b{font-weight:500}
+.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:14px}
+.metrics > div{padding:16px 20px}
+.metrics .k{font-family:var(--mono);font-size:12.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--txt-3);
+  min-height:30px;padding-right:44px!important}
+.metrics .v{font-family:var(--serif);font-size:38px;font-weight:300;letter-spacing:-.025em;font-variant-numeric:tabular-nums;
+  margin:5px 0 8px;line-height:1;-webkit-background-clip:text;background-clip:text;color:transparent;
+  -webkit-text-fill-color:transparent;background-image:var(--grad-brass)}
+.metrics .r{font-family:var(--mono);font-size:12.5px;line-height:1.5;color:var(--txt-2);text-transform:uppercase}
+
+/* background-clip:text so pinta dentro da caixa do elemento. Com line-height
+   menor que 1 o topo dos algarismos fica fora dela e some sem aviso. O padding
+   devolve a area que falta; a margem negativa mantem o texto no lugar.
+   Nao remova sem testar um numero grande com ".g", ".gr" ou ".gg".          */
+.g,.gr,.gg{padding-top:.18em;margin-top:-.18em}
+.metrics .v{padding-top:.18em;margin-top:calc(5px - .18em)}
+.slider .bigval{padding-top:.18em}
+.cover .strip .v{padding-top:.18em;margin-top:-.18em}
+
+/* ============ NAVEGAÇÃO ============ */
+.nav{position:absolute;bottom:38px;right:168px;display:flex;gap:8px;z-index:6;opacity:0;transition:opacity .3s}
+#stage:hover .nav{opacity:1}
+.nav button{width:34px;height:34px;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.05);
+  color:var(--txt-2);cursor:pointer;font-size:13px;line-height:1;border-radius:999px;transition:.2s}
+.nav button:hover{border-color:rgba(245,178,74,.55);color:var(--gold)}
+
+/* ============ ANIMAÇÃO ============ */
+@keyframes numIn{0%{opacity:0;transform:translateY(24px) scale(1.045);filter:blur(16px)}55%{opacity:1}100%{opacity:1;transform:none;filter:blur(0)}}
+@keyframes maskUp{from{clip-path:inset(0 0 102% 0);transform:translateY(12px)}to{clip-path:inset(0 0 -22% 0);transform:none}}
+@keyframes softIn{from{opacity:0}to{opacity:1}}
+@keyframes drawIn{to{stroke-dashoffset:0}}
+@keyframes growX{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+@keyframes popIn{from{transform:scale(0);opacity:0}to{transform:scale(1);opacity:1}}
+.is-active .figure{animation:numIn 1.05s cubic-bezier(.16,.84,.24,1) both;animation-delay:calc(var(--d,0s) + .06s)}
+.is-active .after{animation:softIn .75s ease-out both;animation-delay:calc(var(--d,0s) + .52s)}
+.cover.is-active h1{animation:maskUp 1.15s cubic-bezier(.16,.84,.24,1) both;animation-delay:.16s}
+.draw{stroke-dasharray:var(--len,1400);stroke-dashoffset:var(--len,1400)}
+.is-active .draw{animation:drawIn var(--dur,1.4s) cubic-bezier(.34,.68,.28,1) both}
+.is-active .fadein{animation:softIn var(--dur,.85s) ease-out both}
+.is-active .growx{animation:growX .6s cubic-bezier(.3,.82,.3,1) both;transform-box:fill-box;transform-origin:0% 50%}
+.is-active .pop{animation:popIn .5s cubic-bezier(.2,1.25,.4,1) both;transform-box:fill-box;transform-origin:50% 50%}
+.glowline{filter:drop-shadow(0 0 12px rgba(245,178,74,.45))}
+.slider.sweeping .fill,.slider.sweeping .needle,.slider.sweeping .bigval{transition:none}
+@media (prefers-reduced-motion:reduce){
+  .anim{transition:none!important;opacity:1;transform:none}
+  *,*::before,*::after{animation:none!important}
+}
+</style>
+</head>
+<body>
+<div id="stage">
+  <div id="glow">
+    <div class="mood mood-neutral" data-mood="neutral"></div>
+    <div class="mood mood-problem" data-mood="problem"></div>
+    <div class="mood mood-gain"    data-mood="gain"></div>
+  </div>
+
+  <!-- ============ 01 CAPA ============ -->
+  <section class="slide cover" data-label="" data-mood="neutral">
+    <div class="grid">
+      <div>
+        <span class="eyebrow anim" style="--d:.05s">Consultoria · Proposta comercial</span>
+        <h1 class="anim" style="--d:.14s">Nome do<br>Cliente</h1>
+        <p class="sub anim" style="--d:.24s">Uma frase no infinitivo dizendo o que se quer resolver.</p>
+      </div>
+      <div class="anim" style="--d:.42s">
+        <svg id="svg-capa" class="graf" viewBox="0 0 660 380" role="img" aria-label="Indicador caindo ao longo de dezoito meses"></svg>
+        <p class="note" style="margin-top:4px">Procedência do dado em uma linha.</p>
+      </div>
+    </div>
+    <div class="strip anim" style="--d:.56s">
+      <div class="ac-gold card tight" data-ico="coin"><div class="k">Valor total</div><div class="v g">R$ 24.800</div></div>
+      <div class="ac-blue card tight" data-ico="calendar"><div class="k">Prazo</div><div class="v">12 meses</div></div>
+      <div class="ac-violet card tight" data-ico="coin"><div class="k">Entrada · 30%</div><div class="v">R$ 7.440</div></div>
+      <div class="ac-violet card tight" data-ico="clock"><div class="k">Validade</div><div class="v">30 dias</div></div>
+    </div>
+  </section>
+
+  <!-- ============ 02 TRÊS NÚMEROS ============ -->
+  <section class="slide" data-label="O problema" data-mood="problem">
+    <div class="head">
+      <span class="eyebrow anim">O problema em três números</span>
+      <h2 class="anim" style="--d:.08s">A conclusão em uma frase.<br><em>O contraste em itálico.</em></h2>
+    </div>
+    <div class="trio">
+      <div class="ac-rose card anim" style="--d:.20s" data-ico="funnel">
+        <div class="k after">Rótulo curto</div>
+        <div class="n gr figure">23,0<small>%</small></div>
+        <div class="t after">O que este número significa em gente ou em dinheiro.</div>
+        <div class="conta after">143 ÷ 622 = 23,0%<br>origem do dado</div>
+      </div>
+      <div class="ac-rose card anim" style="--d:.30s" data-ico="down">
+        <div class="k after">Rótulo curto</div>
+        <div class="n gg figure">−9<small> pp</small></div>
+        <div class="t after">A queda traduzida em unidades reais por mês.</div>
+        <div class="conta after">32% × 622 = 199<br>23% × 622 = 143<br>199 − 143 = 56 por mês</div>
+      </div>
+      <div class="ac-gold card anim" style="--d:.40s" data-ico="coin">
+        <div class="k after">Rótulo curto</div>
+        <div class="n g figure"><small>R$ </small>217</div>
+        <div class="t after">O que a queda custa, em dinheiro.</div>
+        <div class="conta after">R$ 50 ÷ 23% = R$ 217,39<br>R$ 44 ÷ 32% = R$ 137,50</div>
+      </div>
+    </div>
+    <div class="src anim" style="--d:.52s">De onde vieram os números e se foram auditados. Máximo de duas linhas.</div>
+  </section>
+
+  <!-- ============ 03 DECOMPOSIÇÃO ============ -->
+  <section class="slide casc" data-label="Por que subiu" data-mood="problem">
+    <div class="head">
+      <span class="eyebrow anim">De onde veio a diferença</span>
+      <h2 class="anim" style="--d:.08s">Um lado subiu pouco. <em>O outro caiu muito.</em></h2>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 420px;gap:22px;align-items:stretch;flex:1;min-height:0">
+      <div class="ac-gold card anim" style="--d:.18s;display:flex;flex-direction:column" data-ico="chart">
+        <div class="lbl">Título do gráfico · antes contra depois</div>
+        <svg id="svg-cascata" class="graf" viewBox="0 0 918 370" role="img" aria-label="Cascata da variação"></svg>
+      </div>
+      <div class="col">
+        <div class="ac-rose card anim" style="--d:.30s" data-ico="down">
+          <div class="lbl">As duas variações</div>
+          <p class="qtxt">Variável A <strong>+13,6%</strong><br>Variável B <strong>32% → 23%</strong></p>
+          <div class="conta">mídia 18,75 · conversão 53,80 · juntas 7,34</div>
+        </div>
+        <div class="ac-mint card anim" style="--d:.38s" data-ico="search">
+          <div class="qtit">Onde está o problema de verdade</div>
+          <p class="qtxt">Separe o que o cliente controla do que ele não controla. É o movimento mais forte da proposta.</p>
+        </div>
+      </div>
+    </div>
+    <div class="src anim" style="--d:.46s">A cascata fecha exata: 137,50 + 18,75 + 53,80 + 7,34 = 217,39.</div>
+  </section>
+
+  <!-- ============ 04 RANKING (barras horizontais) ============ -->
+  <section class="slide" data-label="Onde está concentrado" data-mood="problem">
+    <div class="head">
+      <span class="eyebrow anim">O assunto em uma linha</span>
+      <h2 class="anim" style="--d:.08s">Dois itens respondem por <em>metade do total</em></h2>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 420px;gap:22px;align-items:stretch;flex:1;min-height:0">
+      <div class="ac-rose card anim" style="--d:.18s;display:flex;flex-direction:column" data-ico="chart">
+        <div class="lbl">Título do gráfico · unidade</div>
+        <svg id="svg-barras" class="graf" viewBox="0 0 900 300" role="img" aria-label="Ranking dos itens"></svg>
+      </div>
+      <div class="col">
+        <div class="ac-gold card anim" style="--d:.28s" data-ico="percent">
+          <div class="lbl">O que o ranking mostra</div>
+          <p class="qtxt">Uma frase que diz o que fazer com a informação, não o que ela é.</p>
+          <div class="conta">a conta que gerou o primeiro número</div>
+        </div>
+        <div class="ac-mint card anim" style="--d:.36s" data-ico="search">
+          <div class="qtit">A leitura que interessa</div>
+          <p class="qtxt">Separe o que é controlável do que não é — é o movimento retórico mais forte.</p>
+        </div>
+      </div>
+    </div>
+    <div class="src anim" style="--d:.46s">Procedência dos números em no máximo duas linhas.</div>
+  </section>
+
+  <!-- ============ 05 FASES ============ -->
+  <section class="slide" data-label="As fases" data-mood="neutral">
+    <div class="head" style="margin-bottom:16px">
+      <span class="eyebrow anim">Doze meses, três fases</span>
+      <h2 class="anim" style="--d:.08s">Diagnóstico, implementação e <em>operação assistida</em></h2>
+    </div>
+    <div class="anim" style="--d:.18s">
+      <svg id="svg-linha" class="graf" viewBox="0 0 1424 96" role="img" aria-label="Linha do tempo das fases"></svg>
+    </div>
+    <div class="phases" id="phases">
+      <article class="ac-violet card anim" style="--d:.26s" data-ico="search">
+        <div class="tag"><i>FASE 1</i><span>3 semanas</span></div>
+        <h3>Diagnóstico</h3>
+        <ul><li>Entrega um.</li><li>Entrega dois.</li><li>Entrega três.</li></ul>
+      </article>
+      <article class="ac-gold card anim" style="--d:.34s" data-ico="tune">
+        <div class="tag"><i>FASE 2</i><span>8 semanas</span></div>
+        <h3>Implementação</h3>
+        <ul><li>Entrega um.</li><li>Entrega dois.</li><li>Entrega três.</li></ul>
+      </article>
+      <article class="ac-mint card anim" style="--d:.42s" data-ico="loop">
+        <div class="tag"><i>FASE 3</i><span>9 meses</span></div>
+        <h3>Operação assistida</h3>
+        <ul><li>Entrega um.</li><li>Entrega dois.</li><li>Entrega três.</li></ul>
+      </article>
+    </div>
+  </section>
+
+  <!-- ============ 06 RETORNO (INTERATIVO) ============ -->
+  <section class="slide" data-label="O retorno" data-mood="gain">
+    <div class="head" style="margin-bottom:20px">
+      <span class="eyebrow anim">Arraste até o patamar que o cliente acha possível</span>
+      <h2 class="anim" style="--d:.08s">Um número manda <em>em toda a conta</em></h2>
+    </div>
+    <div class="ac-mint card anim" style="--d:.18s;padding:18px 26px" data-ico="gauge">
+      <div class="rowtop">
+        <span class="rlabel">Nome da variável</span>
+        <button class="reset" id="reset">Voltar ao padrão</button>
+      </div>
+      <div class="slider" id="slider">
+        <div class="bigval" id="bigval">28,0%</div>
+        <div class="track"><div class="fill" id="fill"></div></div>
+        <div class="paytick"></div>
+        <input type="range" id="range" min="23" max="32" step="0.1" value="28" aria-label="Nome da variável">
+        <div class="needle" id="needle"></div>
+      </div>
+      <div class="scale">
+        <div class="s l"><b>23,0%</b><span>HOJE</span></div>
+        <div class="s mk"><b id="mklim">24,8%</b><span>DAQUI PRA CIMA O PROJETO SE PAGA</span></div>
+        <div class="s r"><b>32,0%</b><span>TETO JÁ PRATICADO</span></div>
+      </div>
+      <p class="verdict" id="verdict"><i></i><span id="verdicttxt"></span></p>
+      <div class="metrics">
+        <div class="ac-mint card" data-ico="users"><div class="k">Unidades a mais/mês</div><div class="v" id="m1">+31</div><div class="r" id="r1"></div></div>
+        <div class="ac-mint card" data-ico="coin"><div class="k">Custo unitário</div><div class="v" id="m2">R$ 179</div><div class="r" id="r2"></div></div>
+        <div class="ac-mint card" data-ico="chart"><div class="k">Ganho em 12 meses</div><div class="v" id="m3">R$ 116 mil</div><div class="r" id="r3"></div></div>
+        <div class="ac-mint card" data-ico="up"><div class="k">Retorno por real</div><div class="v" id="m4">4,69×</div><div class="r" id="r4"></div></div>
+      </div>
+    </div>
+    <div class="src anim" style="--d:.44s">Diga o que é decisão sua: a faixa de execução, o teto e o mês em que o ganho começa a contar.</div>
+  </section>
+
+  <!-- ============ 07 FECHAMENTO ============ -->
+  <section class="slide" data-label="Para começar" data-mood="gain">
+    <div class="head" style="margin-bottom:22px">
+      <span class="eyebrow anim">Onde o cliente chega e o que precisa acontecer</span>
+      <h2 class="anim" style="--d:.08s">Para começar, <em>doze meses a partir da assinatura</em></h2>
+      <p class="lede anim" style="--d:.14s">Uma frase que dá escala ao preço, comparando com algo do dia a dia do cliente.</p>
+    </div>
+    <div class="g2">
+      <div class="ac-mint card anim" style="--d:.18s" data-ico="up">
+        <div class="lbl">Onde o cliente chega · faixa</div>
+        <p class="qtxt" id="f-resumo">23,0% → 26,0% a 30,0%</p>
+        <div class="conta">Faixa de execução de 60% a 140% do ganho escolhido.</div>
+      </div>
+      <div class="ac-gold card anim" style="--d:.28s" data-ico="check">
+        <div class="lbl">Os passos</div>
+        <p class="qtxt">1. Aceite e entrada.<br>2. Acessos.<br>3. Um responsável indicado.<br>4. Data de início.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="grain"></div>
+
+  <div class="frame">
+    <div class="mark">Marc<i>a</i></div>
+    <div class="doc">Cliente · Proposta comercial<br>Assunto do documento</div>
+    <div class="foot-label" id="flabel"></div>
+    <div class="counter"><b id="cnow">01</b> / <span id="ctot">06</span></div>
+    <div class="ruler" id="ruler"><div class="base"></div></div>
+  </div>
+  <div class="nav">
+    <button id="prev" aria-label="Tela anterior">&#8592;</button>
+    <button id="next" aria-label="Próxima tela">&#8594;</button>
+  </div>
+</div>
+
+<script>
+(function(){
+"use strict";
+var RM = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+/* ============ 3. ESPINHA ARITMÉTICA — TROQUE AQUI ============
+   Todas as constantes do caso ficam aqui. Nenhum número calculado
+   é escrito no HTML: tudo deriva destas funções. */
+var VOLUME=622, TICKET=149, MARGEM=0.62, SAIDA=0.04, CUSTO_UNIT=50;
+var HOJE=23.0, TETO=32.0, PADRAO=28.0, INICIO_GANHO=4, JANELA=12, PRECO=24800;
+var MARGEM_UNIT = TICKET*MARGEM;
+
+var CUSTO_MES=new Array(JANELA+1).fill(0);
+CUSTO_MES[1]=PRECO*0.30 + 5400*0.70;
+for(var _a=2;_a<=3;_a++) CUSTO_MES[_a]+=(12200/2)*0.70;
+for(var _b=4;_b<=12;_b++) CUSTO_MES[_b]+=800*0.70;
+
+function pontosEf(t,f){ return Math.min((t-HOJE)*(f===undefined?1:f), TETO-HOJE); }
+function unidadesMes(t,f){ return VOLUME*pontosEf(t,f)/100; }
+function estoque(t,f,m){
+  if(m<INICIO_GANHO) return 0;
+  var n=m-INICIO_GANHO+1;
+  return unidadesMes(t,f)*(1-Math.pow(1-SAIDA,n))/SAIDA;
+}
+function ganhoMes(t,f,m){ return estoque(t,f,m)*MARGEM_UNIT; }
+function ganhoAcum(t,f,ate){ var s=0; for(var m=1;m<=ate;m++) s+=ganhoMes(t,f,m); return s; }
+function serie(t,f){ var o=[],ac=0,cc=0; for(var m=1;m<=JANELA;m++){ cc+=CUSTO_MES[m]; ac+=ganhoMes(t,f,m); o.push(ac-cc);} return o; }
+function limiar(f){ var lo=HOJE,hi=TETO; for(var k=0;k<60;k++){ var md=(lo+hi)/2; if(serie(md,f)[JANELA-1]<0) lo=md; else hi=md; } return hi; }
+var LIM_PROV=limiar(1), LIM_PIOR=limiar(0.6);
+
+/* ============ FORMATAÇÃO ============ */
+function nf(n,d){ d=d||0; return n.toLocaleString("pt-BR",{minimumFractionDigits:d,maximumFractionDigits:d}); }
+function rs(n){ return "R$ "+nf(Math.round(n)); }
+function rs2(n){ return "R$ "+nf(n,2); }
+function pct(n){ return nf(n,1)+"%"; }
+function mil(v){ v=Math.round(v); return v>=1000?("R$ "+nf(Math.round(v/1000))+" mil"):rs(v); }
+
+/* ============ PALCO E NAVEGAÇÃO ============ */
+var stage=document.getElementById("stage");
+var slides=Array.prototype.slice.call(document.querySelectorAll(".slide"));
+var ruler=document.getElementById("ruler"), cnow=document.getElementById("cnow"), flabel=document.getElementById("flabel");
+var i=0, taxa=PADRAO;
+document.getElementById("ctot").textContent=String(slides.length).padStart(2,"0");
+
+var ticks=slides.map(function(_,n){
+  var t=document.createElement("div"); t.className="tick";
+  t.style.left=(n/(slides.length-1)*100)+"%"; ruler.appendChild(t); return t;
+});
+function fit(){ var s=Math.min(window.innerWidth/1600,window.innerHeight/900);
+  stage.style.transform="translate(-50%,-50%) scale("+s+")"; }
+var moods=Array.prototype.slice.call(document.querySelectorAll(".mood"));
+function setMood(n){ moods.forEach(function(m){ m.classList.toggle("on",m.getAttribute("data-mood")===n); }); }
+
+var phaseCards=Array.prototype.slice.call(document.querySelectorAll("#phases article")), ph=0;
+function setPhase(k){
+  ph=Math.max(0,Math.min(phaseCards.length-1,k));
+  phaseCards.forEach(function(c,n){ c.classList.toggle("open",n===ph); });
+  acenderTrecho(ph);
+}
+phaseCards.forEach(function(c,n){ c.addEventListener("click",function(){ setPhase(n); }); });
+var TELA_FASES=4, TELA_SIM=5;   /* índices 0-based: ajuste se mudar a ordem das telas */
+
+function show(n){
+  var prev=i;
+  i=Math.max(0,Math.min(slides.length-1,n));
+  slides.forEach(function(s,k){ s.classList.toggle("is-active",k===i); });
+  ticks.forEach(function(t,k){ t.classList.toggle("done",k<i); t.classList.toggle("now",k===i); });
+  cnow.textContent=String(i+1).padStart(2,"0");
+  var lab=slides[i].getAttribute("data-label")||"";
+  flabel.textContent=lab; flabel.style.opacity=lab?"1":"0";
+  if(i===TELA_SIM) setMood(ESTADOS[estado(taxa)].m);
+  else setMood(slides[i].getAttribute("data-mood")||"neutral");
+  stopSweep();
+  if(i===0) desenharCapa();
+  if(i===2) desenharCascata();
+  if(i===3) desenharBarras();
+  if(i===TELA_FASES){ desenharLinha(); setPhase(i>=prev?0:phaseCards.length-1); }
+  if(i===TELA_SIM){ range.value=taxa; sweep(); }
+  /* A URL e enfeite, entao vai por ultimo e isolada. Dentro de um iframe
+     protegido (preview do claude.ai, Notion, etc.) replaceState lanca erro,
+     e um erro no meio de show() abortaria todo o desenho que vem antes.  */
+  try{ if(location.hash!=="#"+(i+1)) history.replaceState(null,"","#"+(i+1)); }catch(e){}
+}
+function nextStep(){ if(i===TELA_FASES && ph<phaseCards.length-1){ setPhase(ph+1); return; } show(i+1); }
+function prevStep(){ if(i===TELA_FASES && ph>0){ setPhase(ph-1); return; } show(i-1); }
+
+document.addEventListener("keydown",function(e){
+  var ae=document.activeElement;
+  if(ae && ae.id==="range" && e.key.indexOf("Arrow")===0) return;   /* as setas são do controle */
+  switch(e.key){
+    case "ArrowRight": case "ArrowDown": case "PageDown": case " ": case "Enter":
+      e.preventDefault(); nextStep(); break;
+    case "ArrowLeft": case "ArrowUp": case "PageUp": case "Backspace":
+      e.preventDefault(); prevStep(); break;
+    case "Home": e.preventDefault(); show(0); break;
+    case "End": e.preventDefault(); show(slides.length-1); break;
+    case "f": case "F":
+      /* tela cheia tambem e bloqueada dentro de iframe: isolada pelo mesmo motivo */
+      try{ if(document.fullscreenElement) document.exitFullscreen();
+           else document.documentElement.requestFullscreen(); }catch(err){}
+      break;
+  }
+});
+document.getElementById("next").addEventListener("click",nextStep);
+document.getElementById("prev").addEventListener("click",prevStep);
+var tx=null,ty=null;
+document.addEventListener("touchstart",function(e){ tx=e.touches[0].clientX; ty=e.touches[0].clientY; },{passive:true});
+document.addEventListener("touchend",function(e){
+  if(tx===null) return;
+  var dx=e.changedTouches[0].clientX-tx, dy=e.changedTouches[0].clientY-ty;
+  if(Math.abs(dx)>52 && Math.abs(dx)>Math.abs(dy)){ if(dx<0) nextStep(); else prevStep(); }
+  tx=null;
+},{passive:true});
+
+/* ============ FERRAMENTAS DE DESENHO ============ */
+var NS="http://www.w3.org/2000/svg";
+function svgel(t,a){ var n=document.createElementNS(NS,t); for(var k in a) n.setAttribute(k,a[k]); return n; }
+function txt(x,y,s,o){
+  var at={x:x,y:y,"font-family":"IBM Plex Mono, monospace","font-size":13,fill:"#6E7A98"};
+  for(var k in (o||{})) at[k]=o[k];
+  var n=svgel("text",at); n.textContent=s; return n;
+}
+function revelar(rect,xa,xb,dur,atraso){
+  if(RM){ rect.setAttribute("width",xb-xa); return; }
+  rect.setAttribute("width",0);
+  var t0=performance.now()+atraso;
+  requestAnimationFrame(function passo(agora){
+    var k=Math.max(0,Math.min(1,(agora-t0)/dur));
+    rect.setAttribute("width",(xb-xa)*(1-Math.pow(1-k,2.2)));
+    if(k<1) requestAnimationFrame(passo);
+  });
+}
+function surgir(node,atraso,dur){
+  if(RM) return;
+  node.style.opacity=0; node.style.transition="opacity "+(dur||520)+"ms ease "+atraso+"ms";
+  requestAnimationFrame(function(){ requestAnimationFrame(function(){ node.style.opacity=1; }); });
+}
+
+/* ============ BARRAS HORIZONTAIS — a receita mais reusada ============
+   Serve comparação, ranking, composição e orçamento: a maior parte dos
+   gráficos de uma apresentação cabe aqui. Uma chamada por gráfico.
+
+   barrasH("svg-x", { W:900, H:300, L:250, R:160, T:20, bh:34, dados:[
+     {rot:"Rótulo à esquerda", val:1000, cor:"var(--mint)", txt:"1.000",
+      forte:true, nota:"linha de apoio embaixo do valor"}
+   ]});
+
+   L = espaço para o rótulo da esquerda; R = espaço para valor + nota da
+   direita. Se um rótulo aparecer cortado, é esse número que está pequeno —
+   o verificador aponta de que lado.                                      */
+function barrasH(id, cfg){
+  var s=document.getElementById(id); if(!s) return;
+  s.innerHTML="";
+  var W=cfg.W, H=cfg.H, L=cfg.L||210, R=cfg.R||140, T=cfg.T||16;
+  var d=cfg.dados, n=d.length;
+  var alt=(H-T)/n, bh=Math.min(cfg.bh||30, alt*0.62);
+  var mx=Math.max.apply(null, d.map(function(x){ return x.val; }));
+  d.forEach(function(item,k){
+    var y=T+alt*k+(alt-bh)/2;
+    var larg=Math.max(2,(W-L-R)*item.val/mx);
+    s.appendChild(txt(L-14, y+bh/2+5, item.rot, {"text-anchor":"end","font-size":cfg.fr||14,
+      fill: item.forte ? "#EFF2F9" : "#A9B3CA"}));
+    var r=svgel("rect",{x:L,y:y,width:0,height:bh,rx:5,fill:item.cor||"var(--gold)",opacity:item.fraca?.42:.88});
+    s.appendChild(r);
+    if(RM) r.setAttribute("width",larg); else crescerBarra(r,larg,120+k*110);
+    var v=txt(L+larg+12, y+bh/2+5, item.txt || nf(item.val), {"font-size":cfg.fv||15,
+      fill: item.forte ? "#EFF2F9" : "#A9B3CA"});
+    s.appendChild(v); surgir(v,120+k*110+420);
+    if(item.nota){
+      var nt=txt(L+larg+12, y+bh/2+22, item.nota, {"font-size":12.5, fill:"#6E7A98"});
+      s.appendChild(nt); surgir(nt,120+k*110+520);
+    }
+  });
+}
+function crescerBarra(rect,largura,atraso){
+  var t0=performance.now()+atraso;
+  requestAnimationFrame(function passo(agora){
+    var k=Math.max(0,Math.min(1,(agora-t0)/620));
+    rect.setAttribute("width", largura*(1-Math.pow(1-k,2.4)));
+    if(k<1) requestAnimationFrame(passo);
+  });
+}
+
+/* ============ TELA 01 — linha de declínio ============ */
+function desenharCapa(){
+  var s=document.getElementById("svg-capa"); if(!s) return;
+  s.innerHTML="";
+  var W=660,H=380,L=56,R=26,T=22,B=58;
+  var px=function(k){ return L+(W-L-R)*k/17; };
+  var py=function(v){ return T+(H-T-B)*(1-(v-20)/(34-20)); };
+  [22,26,30,34].forEach(function(v){
+    s.appendChild(svgel("line",{x1:L,x2:W-R,y1:py(v),y2:py(v),stroke:"rgba(255,255,255,.075)"}));
+    s.appendChild(txt(L-12,py(v)+4,v+"%",{"text-anchor":"end"}));
+  });
+  var cp=svgel("clipPath",{id:"clip-capa"}), rc=svgel("rect",{x:px(0)-8,y:0,height:H,width:0});
+  cp.appendChild(rc); s.appendChild(cp);
+  s.appendChild(svgel("path",{d:"M"+px(0)+" "+py(32)+" L"+px(17)+" "+py(23),fill:"none",
+    stroke:"var(--rose)","stroke-width":3.2,"stroke-linecap":"round","stroke-dasharray":"9 9","clip-path":"url(#clip-capa)"}));
+  revelar(rc,px(0)-8,px(17)+10,2400,120);
+  [[0,"32%",32],[17,"23,0%",23]].forEach(function(d,k){
+    var g=svgel("g");
+    g.appendChild(svgel("circle",{cx:px(d[0]),cy:py(d[2]),r:6,fill:"var(--rose)",stroke:"rgba(7,10,19,.9)","stroke-width":2}));
+    g.appendChild(txt(px(d[0])+(k?-14:14),py(d[2])+(k?26:-14),d[1],{"font-size":18,fill:"#EFF2F9","text-anchor":k?"end":"start"}));
+    s.appendChild(g); surgir(g,k?2350:260);
+  });
+  s.appendChild(txt(px(0),H-34,"há 18 meses",{"text-anchor":"start"}));
+  s.appendChild(txt(px(17),H-34,"hoje",{"text-anchor":"end"}));
+}
+
+/* ============ TELA 03 — cascata ============ */
+var CASC=[
+  ["Antes",137.50,"base",""],
+  ["+ variável A",18.75,"sobe","23% da alta"],
+  ["+ variável B",53.80,"sobe","67% da alta"],
+  ["+ as duas juntas",7.34,"misto","9% da alta"],
+  ["Hoje",217.39,"base",""]
+];
+function desenharCascata(){
+  var s=document.getElementById("svg-cascata"); if(!s) return;
+  s.innerHTML="";
+  var W=918,H=370,L=92,R=16,T=24,B=82;
+  var topo=260, py=function(v){ return T+(H-T-B)*(1-v/topo); };
+  var larg=(W-L-R)/CASC.length, bw=larg*0.52;
+  [50,100,150,200,250].forEach(function(v){
+    s.appendChild(svgel("line",{x1:L,x2:W-R,y1:py(v),y2:py(v),stroke:"rgba(255,255,255,.075)"}));
+    s.appendChild(txt(L-12,py(v)+4,"R$ "+v,{"text-anchor":"end"}));
+  });
+  var base=0;
+  CASC.forEach(function(d,k){
+    var val=d[1], tipo=d[2], x=L+larg*k+(larg-bw)/2, ya,yb,cor;
+    if(tipo==="base"){ ya=py(0); yb=py(val); cor="var(--gold)"; base=val; }
+    else{ var topoB=base+val; ya=py(base); yb=py(topoB); base=topoB;
+          cor=(tipo==="misto")?"#7B85A6":"var(--rose)"; }
+    var y=Math.min(ya,yb), h=Math.abs(yb-ya), g=svgel("g");
+    g.appendChild(svgel("rect",{x:x,y:y,width:bw,height:Math.max(h,3),rx:5,fill:cor,opacity:.82}));
+    g.appendChild(txt(x+bw/2,y-11,(tipo==="base"?"":"+ ")+rs2(val),{"text-anchor":"middle","font-size":15,fill:"#EFF2F9"}));
+    s.appendChild(g);
+    if(!RM){
+      g.style.opacity=0; g.style.transform="scaleY(.02)"; g.style.transformOrigin=(x+bw/2)+"px "+ya+"px";
+      g.style.transition="opacity 280ms ease "+(k*440)+"ms, transform 460ms cubic-bezier(.22,.9,.28,1) "+(k*440)+"ms";
+      requestAnimationFrame(function(){ requestAnimationFrame(function(){ g.style.opacity=1; g.style.transform="scaleY(1)"; }); });
+    }
+    var extremo=(k===0||k===CASC.length-1);
+    d[0].split(" ").reduce(function(ls,p){
+      if(!ls.length||ls[ls.length-1].length+p.length>15) ls.push(p); else ls[ls.length-1]+=" "+p; return ls;
+    },[]).forEach(function(linha,j){
+      s.appendChild(txt(x+bw/2,H-B+26+j*17,linha,{"text-anchor":"middle","font-size":13,fill:extremo?"#A9B3CA":"#6E7A98"}));
+    });
+    if(d[3]) s.appendChild(txt(x+bw/2,H-B+62,d[3],{"text-anchor":"middle","font-size":13,fill:(k===2)?"#FFB6A8":"#6E7A98"}));
+  });
+  s.appendChild(svgel("line",{x1:L,x2:W-R,y1:py(0),y2:py(0),stroke:"rgba(255,255,255,.22)"}));
+}
+
+/* ============ TELA 04 — ranking em barras ============ */
+function desenharBarras(){
+  barrasH("svg-barras",{ W:900,H:300,L:230,R:170,T:20,bh:34, dados:[
+    {rot:"Item mais pesado",  val:48, cor:"var(--rose)",   txt:"48%", forte:true, nota:"o que puxa o total"},
+    {rot:"Segundo item",      val:22, cor:"var(--gold)",   txt:"22%"},
+    {rot:"Terceiro item",     val:14, cor:"var(--gold)",   txt:"14%"},
+    {rot:"Quarto item",       val:10, cor:"var(--blue)",   txt:"10%"},
+    {rot:"Demais",            val:6,  cor:"#7B85A6",       txt:"6%"}
+  ]});
+}
+
+/* ============ TELA 04 — linha do tempo ============ */
+var FASES=[["Diagnóstico",0,0.75,"3 semanas"],["Implementação",0.75,2.75,"8 semanas"],["Operação assistida",2.75,12,"9 meses"]];
+var CORES_FASE=["var(--violet)","var(--gold)","var(--mint)"];
+var trechos=[];
+function desenharLinha(){
+  var s=document.getElementById("svg-linha"); if(!s) return;
+  s.innerHTML=""; trechos=[];
+  var W=1424,y=44,esc=function(m){ return W*m/12; };
+  FASES.forEach(function(f,k){
+    var r=svgel("rect",{x:esc(f[1])+(k?4:0),y:y,width:esc(f[2])-esc(f[1])-(k?4:0)-4,height:13,rx:6,fill:CORES_FASE[k],opacity:.30});
+    s.appendChild(r); trechos.push(r);
+    var dx=[2,10,10][k], ny=(k===1? y-31 : y-13);   /* rótulos escalonados: o 1º trecho é curto */
+    s.appendChild(txt(esc(f[1])+dx,ny,f[0],{"font-size":13.5,fill:"#A9B3CA"}));
+    s.appendChild(txt(esc(f[1])+dx,y+32,f[3],{"font-size":13}));
+    if(!RM){
+      r.style.transformOrigin=esc(f[1])+"px "+y+"px"; r.style.transform="scaleX(0)";
+      r.style.transition="transform 620ms cubic-bezier(.22,.9,.28,1) "+(k*380)+"ms, opacity .4s ease";
+      requestAnimationFrame(function(){ requestAnimationFrame(function(){ r.style.transform="scaleX(1)"; }); });
+    } else { r.style.transition="opacity .4s ease"; }
+  });
+  [6,9,12].forEach(function(m){ s.appendChild(txt(esc(m),y+32,m+"º mês",{"text-anchor":"end"})); });
+  acenderTrecho(ph);
+}
+function acenderTrecho(k){ trechos.forEach(function(t,n){ t.setAttribute("opacity",n===k?".92":".24"); }); }
+
+/* ============ TELA 05 — simulador ============ */
+var ESTADOS=[
+  {c:"var(--rose)", g:"var(--grad-oxide)", m:"problem", s:"rgba(255,107,90,.55)", t:"#FFB6A8"},
+  {c:"var(--gold)", g:"var(--grad-brass)", m:"neutral", s:"rgba(245,178,74,.55)", t:"#FFDDA4"},
+  {c:"var(--mint)", g:"var(--grad-moss)",  m:"gain",    s:"rgba(57,222,174,.55)", t:"#A6F3DA"}
+];
+function estado(t){ return t<LIM_PROV-1e-9 ? 0 : (t<LIM_PIOR-1e-9 ? 1 : 2); }
+var range=document.getElementById("range"), slider=document.getElementById("slider");
+var el=function(id){ return document.getElementById(id); };
+
+var posLim=((LIM_PIOR-HOJE)/(TETO-HOJE)).toFixed(5);   /* marca calculada, nunca escrita à mão */
+slider.style.setProperty("--pt",posLim);
+document.querySelector(".scale").style.setProperty("--pt",posLim);
+el("mklim").textContent=pct(LIM_PIOR);
+
+function pintar(c,leve){
+  taxa=c;
+  var st=estado(c), S=ESTADOS[st], cor=S.c, pp=(c-HOJE)/(TETO-HOJE);
+  slider.style.setProperty("--p",pp.toFixed(5));
+  slider.style.setProperty("--pv",Math.min(.955,Math.max(.045,pp)).toFixed(5));
+  el("bigval").textContent=pct(c); el("bigval").style.backgroundImage=S.g;
+  el("fill").style.background="linear-gradient(90deg,"+cor+",rgba(255,255,255,.55))";
+  el("fill").style.boxShadow="0 0 26px "+S.s;
+  el("needle").style.background=cor;
+  var vd=el("verdict");
+  vd.style.color=S.t;
+  vd.style.background="linear-gradient(150deg,"+S.s.replace(".55)",".16)")+","+S.s.replace(".55)",".04)")+")";
+  vd.style.borderColor=S.s.replace(".55)",".34)");
+  if(!leve && i===TELA_SIM) setMood(S.m);
+  el("reset").classList.toggle("on",Math.abs(c-PADRAO)>0.049);
+  if(st===0) el("verdicttxt").innerHTML="Neste patamar o retorno <b>não cobre</b> o investimento em 12 meses. Faltam "+nf(LIM_PROV-c,1)+" pontos.";
+  else if(st===1) el("verdicttxt").innerHTML="Cobre no cenário provável, <b>mas não no pior caso</b>. Faltam "+nf(LIM_PIOR-c,1)+" pontos.";
+  else el("verdicttxt").innerHTML="Cobre o investimento <b>até no pior caso</b>, dentro dos 12 meses.";
+
+  ["m1","m2","m3","m4"].forEach(function(id){ el(id).style.backgroundImage=S.g; });
+  var un=unidadesMes(c,1);
+  el("m1").textContent="+"+nf(Math.round(un));
+  el("r1").textContent="faixa +"+nf(Math.round(unidadesMes(c,0.6)))+" a +"+nf(Math.round(unidadesMes(c,1.4)));
+  el("m2").textContent=rs(CUSTO_UNIT/((HOJE+pontosEf(c,1))/100));
+  el("r2").textContent="hoje "+rs(CUSTO_UNIT/(HOJE/100));
+  var doze=function(f){ return ganhoAcum(c,f,JANELA); };
+  el("m3").textContent=mil(doze(1));
+  el("r3").textContent="faixa "+rs(doze(0.6))+" a "+rs(doze(1.4));
+  el("m4").textContent=nf(doze(1)/PRECO,2)+"×";
+  el("r4").textContent="faixa "+nf(doze(0.6)/PRECO,2)+"× a "+nf(doze(1.4)/PRECO,2)+"×";
+  if(leve) return;
+  propagar(c);
+}
+/* TROQUE AQUI: tudo que as telas seguintes precisam recalcular */
+function propagar(c){
+  el("f-resumo").textContent=pct(HOJE)+" → "+pct(HOJE+pontosEf(c,0.6))+" a "+pct(HOJE+pontosEf(c,1.4));
+}
+
+var raf=null;
+function stopSweep(){ if(raf){ cancelAnimationFrame(raf); raf=null; } slider.classList.remove("sweeping"); }
+function sweep(){
+  stopSweep();
+  var alvo=parseFloat(range.value);
+  if(RM || alvo<=HOJE+0.05){ pintar(alvo,false); return; }
+  slider.classList.add("sweeping");
+  var t0=null, dur=1000;
+  raf=requestAnimationFrame(function passo(t){
+    if(t0===null) t0=t;
+    var k=Math.min(1,(t-t0)/dur), e=1-Math.pow(1-k,3);
+    pintar(HOJE+(alvo-HOJE)*e, k<1);
+    if(k<1) raf=requestAnimationFrame(passo);
+    else { raf=null; slider.classList.remove("sweeping"); pintar(alvo,false); }
+  });
+}
+range.addEventListener("input",function(){ stopSweep(); pintar(parseFloat(range.value),false); });
+range.addEventListener("pointerdown",stopSweep);
+["pointerup","mouseup","touchend"].forEach(function(ev){
+  range.addEventListener(ev,function(){ setTimeout(function(){ range.blur(); },0); });
+});
+el("reset").addEventListener("click",function(){ stopSweep(); range.value=PADRAO; pintar(PADRAO,false); range.blur(); });
+
+/* ============ ÍCONES ============ */
+var ICONES={
+  coin:'<circle cx="12" cy="12" r="8.4"/><path d="M12 6.9v10.2"/><path d="M14.7 9.6c0-1.2-1.2-1.8-2.7-1.8s-2.7.6-2.7 1.9 1.2 1.7 2.7 2 2.7.8 2.7 2.1-1.2 1.9-2.7 1.9-2.7-.7-2.7-1.9"/>',
+  calendar:'<rect x="3.4" y="5.2" width="17.2" height="15.4" rx="2.6"/><path d="M3.4 10.2h17.2M8 3.2v4M16 3.2v4"/>',
+  clock:'<circle cx="12" cy="12" r="8.4"/><path d="M12 7.2V12l3.4 2.1"/>',
+  funnel:'<path d="M3.4 4.6h17.2l-6.6 7.8v6.4l-4 2.4v-8.8z"/>',
+  down:'<path d="M3.2 6.8l5.6 5.6 3.6-3.6 8.4 8.4"/><path d="M15.6 17.2h5.2V12"/>',
+  up:'<path d="M3.2 17.2l5.6-5.6 3.6 3.6 8.4-8.4"/><path d="M15.6 6.8h5.2V12"/>',
+  percent:'<path d="M6.2 17.8L17.8 6.2"/><circle cx="7.6" cy="7.6" r="2.6"/><circle cx="16.4" cy="16.4" r="2.6"/>',
+  chart:'<path d="M3.4 3.6v17h17.2"/><path d="M6.6 15.4l4-4.2 3 2.8 6.2-7"/>',
+  users:'<circle cx="9.2" cy="8" r="3.3"/><path d="M2.8 19.4c0-3.4 2.9-5.4 6.4-5.4s6.4 2 6.4 5.4"/><path d="M16.4 5.4a3.3 3.3 0 010 5.6M17.4 14.4c2.4.5 3.8 2.3 3.8 5"/>',
+  drop:'<path d="M12 3.2c4 5.2 6.2 8 6.2 10.6a6.2 6.2 0 11-12.4 0C5.8 11.2 8 8.4 12 3.2z"/>',
+  search:'<circle cx="10.6" cy="10.6" r="6.4"/><path d="M15.4 15.4l5 5"/>',
+  tune:'<path d="M3.4 7.2h17.2M3.4 12h17.2M3.4 16.8h17.2"/><circle cx="8.4" cy="7.2" r="2.2"/><circle cx="15" cy="12" r="2.2"/><circle cx="10" cy="16.8" r="2.2"/>',
+  loop:'<path d="M4.4 12a7.6 7.6 0 0112.6-5.7"/><path d="M19.6 12a7.6 7.6 0 01-12.6 5.7"/><path d="M17.6 2.9v3.6h-3.6M6.4 21.1v-3.6h3.6"/>',
+  check:'<path d="M2.8 7l1.9 1.9L8.2 5.4M2.8 12l1.9 1.9 3.5-3.5M2.8 17l1.9 1.9 3.5-3.5"/><path d="M11.4 7h9.8M11.4 12h9.8M11.4 17h9.8"/>',
+  shield:'<path d="M12 3l7.2 3v6.2c0 4.6-3 7.7-7.2 9.3-4.2-1.6-7.2-4.7-7.2-9.3V6z"/><path d="M8.9 12.1l2.3 2.3 4.1-4.4"/>',
+  nope:'<circle cx="12" cy="12" r="8.4"/><path d="M8.9 8.9l6.2 6.2M15.1 8.9l-6.2 6.2"/>',
+  gauge:'<path d="M3.8 17.2a8.8 8.8 0 1116.4 0"/><path d="M12 17.2l4.6-5.4"/><circle cx="12" cy="17.2" r="1.5"/>'
+};
+document.querySelectorAll("[data-ico]").forEach(function(node){
+  var d=ICONES[node.getAttribute("data-ico")]; if(!d) return;
+  var svg=document.createElementNS(NS,"svg");
+  svg.setAttribute("class","ico"); svg.setAttribute("viewBox","0 0 24 24");
+  svg.setAttribute("fill","none"); svg.setAttribute("stroke","currentColor");
+  svg.setAttribute("stroke-width","1.35"); svg.setAttribute("stroke-linecap","round");
+  svg.setAttribute("stroke-linejoin","round"); svg.setAttribute("aria-hidden","true");
+  svg.innerHTML=d; node.appendChild(svg);
+});
+
+/* ============ PARTIDA ============ */
+document.querySelectorAll(".draw").forEach(function(e){
+  try{ e.style.setProperty("--len", Math.ceil(e.getTotalLength())); }catch(err){}
+});
+window.addEventListener("resize",fit);
+fit();
+range.value=PADRAO;
+pintar(PADRAO,false);
+var start=parseInt((location.hash||"").replace("#",""),10);
+show(isNaN(start)?0:start-1);
+})();
+</script>
+</body>
+</html>

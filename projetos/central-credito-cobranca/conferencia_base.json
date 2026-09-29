@@ -1,0 +1,808 @@
+{
+ "data_referencia": "2026-08-12",
+ "totais": {
+  "titulos": 754,
+  "clientes": 12,
+  "abertos_qtd": 40,
+  "abertos_centavos": 98190000,
+  "vencidos_qtd": 16,
+  "vencidos_centavos": 30268000
+ },
+ "hoje": [
+  {
+   "posicao": 1,
+   "cod": 1,
+   "valor_vencido_centavos": 6013000,
+   "qtd_vencidos": 1,
+   "dias_atraso_max": 51,
+   "rank_medio": 2.333333,
+   "contatado_recente": false,
+   "explicacao": "Atrasa em média 3 dias; o título está vencido há 51 dias. Fora do padrão dele: vale checar se é pontual ou o começo de algo novo."
+  },
+  {
+   "posicao": 2,
+   "cod": 5,
+   "valor_vencido_centavos": 1217000,
+   "qtd_vencidos": 2,
+   "dias_atraso_max": 112,
+   "rank_medio": 3.0,
+   "contatado_recente": false,
+   "explicacao": "Atrasa em média 9 dias; o mais antigo está vencido há 112 dias. Fora do padrão dele: vale checar se é pontual ou o começo de algo novo."
+  },
+  {
+   "posicao": 3,
+   "cod": 3,
+   "valor_vencido_centavos": 12678000,
+   "qtd_vencidos": 5,
+   "dias_atraso_max": 30,
+   "rank_medio": 3.333333,
+   "contatado_recente": false,
+   "explicacao": "Maior valor vencido da fila. Piorou: o atraso passou de 6 para 15 dias nos últimos 6 meses, mudança confirmada. O mais antigo está vencido há 30 dias."
+  },
+  {
+   "posicao": 4,
+   "cod": 11,
+   "valor_vencido_centavos": 2128000,
+   "qtd_vencidos": 1,
+   "dias_atraso_max": 44,
+   "rank_medio": 4.0,
+   "contatado_recente": false,
+   "explicacao": "Atrasa em média 14 dias; o título está vencido há 44 dias. Fora do padrão dele: vale checar se é pontual ou o começo de algo novo."
+  },
+  {
+   "posicao": 5,
+   "cod": 4,
+   "valor_vencido_centavos": 3080000,
+   "qtd_vencidos": 2,
+   "dias_atraso_max": 14,
+   "rank_medio": 5.333333,
+   "contatado_recente": false,
+   "explicacao": "Atrasa em média 18 dias e sempre paga; o mais antigo está vencido há 14 dias. É o padrão dele: não é sinal novo de risco, só o valor pesa na fila."
+  },
+  {
+   "posicao": 6,
+   "cod": 6,
+   "valor_vencido_centavos": 3100000,
+   "qtd_vencidos": 1,
+   "dias_atraso_max": 2,
+   "rank_medio": 5.666667,
+   "contatado_recente": false,
+   "explicacao": "Atrasa em média 11 dias e sempre paga; o título está vencido há 2 dias. É o padrão dele: não é sinal novo de risco, só o valor pesa na fila."
+  },
+  {
+   "posicao": 7,
+   "cod": 12,
+   "valor_vencido_centavos": 2052000,
+   "qtd_vencidos": 4,
+   "dias_atraso_max": 93,
+   "rank_medio": 4.333333,
+   "contatado_recente": true,
+   "explicacao": "Cobrado há 2 dias (10/08, WhatsApp): desceu para o fim da fila, e ligar de novo agora só irritaria. O mais antigo está vencido há 93 dias. É o padrão dele: atrasa em média 35 dias e sempre paga."
+  }
+ ],
+ "risco": [
+  {
+   "cod": 1,
+   "indice": 26.1,
+   "valor_em_risco_centavos": 6592100,
+   "saldo_aberto_centavos": 25257000,
+   "qtd_vencidos_hoje": 1,
+   "nivel": 2.743243,
+   "variabilidade": 3.296439,
+   "prazo_efetivo": 30.743243,
+   "atraso_recente": 2.176471,
+   "atraso_antigo": 2.912281,
+   "piora_confirmada": false,
+   "selo_cronico_estavel": false,
+   "selo_invisivel": false,
+   "sazonais": [],
+   "componentes": [
+    [
+     "nivel",
+     1.2
+    ],
+    [
+     "variabilidade",
+     5.7
+    ],
+    [
+     "mudanca",
+     0
+    ],
+    [
+     "compra",
+     3.2
+    ],
+    [
+     "faturamento",
+     10
+    ],
+    [
+     "limite",
+     6.0
+    ]
+   ],
+   "alerta": "Atacado São Jorge Ltda pesa no índice principalmente por causa de: concentração no faturamento e ocupação do limite de crédito. Ação: segue no fluxo normal de cobrança da tela Hoje; nada aqui pede tratamento especial além disso.",
+   "atraso_esperado": 2.743243,
+   "base_atraso_esperado": "média histórica dele, fora dos meses sazonais"
+  },
+  {
+   "cod": 2,
+   "indice": 31.9,
+   "valor_em_risco_centavos": 4158500,
+   "saldo_aberto_centavos": 13036000,
+   "qtd_vencidos_hoje": 0,
+   "nivel": 6.395062,
+   "variabilidade": 3.441501,
+   "prazo_efetivo": 34.395062,
+   "atraso_recente": 7.095238,
+   "atraso_antigo": 6.15,
+   "piora_confirmada": false,
+   "selo_cronico_estavel": false,
+   "selo_invisivel": true,
+   "sazonais": [],
+   "componentes": [
+    [
+     "nivel",
+     2.8
+    ],
+    [
+     "variabilidade",
+     6.0
+    ],
+    [
+     "mudanca",
+     1.9
+    ],
+    [
+     "compra",
+     8.5
+    ],
+    [
+     "faturamento",
+     8.9
+    ],
+    [
+     "limite",
+     3.8
+    ]
+   ],
+   "alerta": "Rede Bom Preço Supermercados nunca apareceu em nenhuma lista de cobrança — não tem título vencido hoje e nunca foi contatado — mas o histórico mostra o atraso médio subindo (de 6 para 7 dias nos últimos 6 meses) e o saldo em aberto dele é de R$ 130.360,00 — 18,7% do faturamento dos últimos 12 meses. Ação: ligar preventivamente antes que isso vire um problema visível — nenhum sistema de cobrança vai apontar esse cliente sozinho, porque nada nele está formalmente vencido.",
+   "atraso_esperado": 6.395062,
+   "base_atraso_esperado": "média histórica dele, fora dos meses sazonais"
+  },
+  {
+   "cod": 3,
+   "indice": 52.9,
+   "valor_em_risco_centavos": 8940600,
+   "saldo_aberto_centavos": 16901000,
+   "qtd_vencidos_hoje": 5,
+   "nivel": 7.714286,
+   "variabilidade": 6.485463,
+   "prazo_efetivo": 28.714286,
+   "atraso_recente": 14.875,
+   "atraso_antigo": 5.592593,
+   "piora_confirmada": true,
+   "selo_cronico_estavel": false,
+   "selo_invisivel": false,
+   "sazonais": [],
+   "componentes": [
+    [
+     "nivel",
+     3.4
+    ],
+    [
+     "variabilidade",
+     11.3
+    ],
+    [
+     "mudanca",
+     14.3
+    ],
+    [
+     "compra",
+     11.2
+    ],
+    [
+     "faturamento",
+     6.2
+    ],
+    [
+     "limite",
+     6.5
+    ]
+   ],
+   "alerta": "Supermercado Vila Nova pesa no índice principalmente por causa de: mudança recente de comportamento e variabilidade (imprevisibilidade). Ação: ligar e perguntar diretamente se há um problema pontual — a mudança de comportamento é estatisticamente real, não é ruído do dia a dia.",
+   "atraso_esperado": 14.875,
+   "base_atraso_esperado": "comportamento dos últimos 6 meses, porque ele piorou de forma confirmada"
+  },
+  {
+   "cod": 4,
+   "indice": 25.4,
+   "valor_em_risco_centavos": 1109200,
+   "saldo_aberto_centavos": 4367000,
+   "qtd_vencidos_hoje": 2,
+   "nivel": 18.36,
+   "variabilidade": 1.410815,
+   "prazo_efetivo": 32.36,
+   "atraso_recente": 18.611111,
+   "atraso_antigo": 18.280702,
+   "piora_confirmada": false,
+   "selo_cronico_estavel": true,
+   "selo_invisivel": false,
+   "sazonais": [],
+   "componentes": [
+    [
+     "nivel",
+     8.0
+    ],
+    [
+     "variabilidade",
+     2.4
+    ],
+    [
+     "mudanca",
+     0.7
+    ],
+    [
+     "compra",
+     7.0
+    ],
+    [
+     "faturamento",
+     3.1
+    ],
+    [
+     "limite",
+     4.2
+    ]
+   ],
+   "alerta": "Adega Serra Azul aparece como atrasado quase todo mês, mas isso não é risco: há 75 títulos pagos, ele atrasa de forma muito consistente (desvio-padrão de 1 dia em torno de 18 dias) e o atraso atual não fugiu desse padrão. O prazo contratado com ele é \"14 dias\", mas na prática o dinheiro entra em torno de 32 dias corridos depois da emissão. Ação: parar de tratar isso como cobrança urgente — se fizer sentido, renegocie o prazo contratado para perto do que ele já pratica, e pare de gastar tempo da equipe ligando para quem sempre paga.",
+   "atraso_esperado": 18.36,
+   "base_atraso_esperado": "média histórica dele, fora dos meses sazonais"
+  },
+  {
+   "cod": 5,
+   "indice": 36.7,
+   "valor_em_risco_centavos": 446600,
+   "saldo_aberto_centavos": 1217000,
+   "qtd_vencidos_hoje": 2,
+   "nivel": 9.027027,
+   "variabilidade": 4.35261,
+   "prazo_efetivo": 23.027027,
+   "atraso_recente": 11.5,
+   "atraso_antigo": 8.727273,
+   "piora_confirmada": false,
+   "selo_cronico_estavel": false,
+   "selo_invisivel": false,
+   "sazonais": [],
+   "componentes": [
+    [
+     "nivel",
+     3.9
+    ],
+    [
+     "variabilidade",
+     7.6
+    ],
+    [
+     "mudanca",
+     5.5
+    ],
+    [
+     "compra",
+     15.0
+    ],
+    [
+     "faturamento",
+     0.6
+    ],
+    [
+     "limite",
+     4.1
+    ]
+   ],
+   "alerta": "Mercearia Dona Zica pesa no índice principalmente por causa de: sinal de compra (frequência e tamanho do pedido) e variabilidade (imprevisibilidade). Ação: segue no fluxo normal de cobrança da tela Hoje; nada aqui pede tratamento especial além disso.",
+   "atraso_esperado": 9.027027,
+   "base_atraso_esperado": "média histórica dele, fora dos meses sazonais"
+  },
+  {
+   "cod": 6,
+   "indice": 27.0,
+   "valor_em_risco_centavos": 1720700,
+   "saldo_aberto_centavos": 6373000,
+   "qtd_vencidos_hoje": 1,
+   "nivel": 10.6,
+   "variabilidade": 5.51362,
+   "prazo_efetivo": 31.6,
+   "atraso_recente": 10.368421,
+   "atraso_antigo": 11.333333,
+   "piora_confirmada": false,
+   "selo_cronico_estavel": false,
+   "selo_invisivel": false,
+   "sazonais": [],
+   "componentes": [
+    [
+     "nivel",
+     4.6
+    ],
+    [
+     "variabilidade",
+     9.6
+    ],
+    [
+     "mudanca",
+     0
+    ],
+    [
+     "compra",
+     0.0
+    ],
+    [
+     "faturamento",
+     3.7
+    ],
+    [
+     "limite",
+     9.1
+    ]
+   ],
+   "alerta": "Empório Frescor Hortifrúti pesa no índice principalmente por causa de: variabilidade (imprevisibilidade) e ocupação do limite de crédito. Ação: reavaliar o limite de crédito antes de liberar novos pedidos — já está em 91% do limite.",
+   "atraso_esperado": 10.6,
+   "base_atraso_esperado": "média histórica dele, fora dos meses sazonais"
+  },
+  {
+   "cod": 7,
+   "indice": 30.4,
+   "valor_em_risco_centavos": 1880800,
+   "saldo_aberto_centavos": 6187000,
+   "qtd_vencidos_hoje": 0,
+   "nivel": 7.770833,
+   "variabilidade": 4.27317,
+   "prazo_efetivo": 35.770833,
+   "atraso_recente": 10,
+   "atraso_antigo": 6.757576,
+   "piora_confirmada": false,
+   "selo_cronico_estavel": false,
+   "selo_invisivel": false,
+   "sazonais": [
+    1,
+    2
+   ],
+   "componentes": [
+    [
+     "nivel",
+     3.4
+    ],
+    [
+     "variabilidade",
+     7.4
+    ],
+    [
+     "mudanca",
+     6.5
+    ],
+    [
+     "compra",
+     6.0
+    ],
+    [
+     "faturamento",
+     4.2
+    ],
+    [
+     "limite",
+     2.9
+    ]
+   ],
+   "alerta": "Congelados Polo Norte pesa no índice principalmente por causa de: variabilidade (imprevisibilidade) e mudança recente de comportamento. Ação: nenhuma cobrança necessária agora; vale só acompanhar o saldo em aberto.",
+   "atraso_esperado": 7.770833,
+   "base_atraso_esperado": "média histórica dele, fora dos meses sazonais"
+  },
+  {
+   "cod": 8,
+   "indice": 15.8,
+   "valor_em_risco_centavos": 437800,
+   "saldo_aberto_centavos": 2771000,
+   "qtd_vencidos_hoje": 0,
+   "nivel": 3.15625,
+   "variabilidade": 2.916648,
+   "prazo_efetivo": 24.15625,
+   "atraso_recente": 4.111111,
+   "atraso_antigo": 2.782609,
+   "piora_confirmada": false,
+   "selo_cronico_estavel": false,
+   "selo_invisivel": false,
+   "sazonais": [],
+   "componentes": [
+    [
+     "nivel",
+     1.4
+    ],
+    [
+     "variabilidade",
+     5.1
+    ],
+    [
+     "mudanca",
+     2.7
+    ],
+    [
+     "compra",
+     0.0
+    ],
+    [
+     "faturamento",
+     1.6
+    ],
+    [
+     "limite",
+     5.0
+    ]
+   ],
+   "alerta": "Farmácia São Rafael pesa no índice principalmente por causa de: variabilidade (imprevisibilidade) e ocupação do limite de crédito. Ação: nenhuma cobrança necessária agora; vale só acompanhar o saldo em aberto.",
+   "atraso_esperado": 3.15625,
+   "base_atraso_esperado": "média histórica dele, fora dos meses sazonais"
+  },
+  {
+   "cod": 9,
+   "indice": 25.7,
+   "valor_em_risco_centavos": 3648100,
+   "saldo_aberto_centavos": 14195000,
+   "qtd_vencidos_hoje": 0,
+   "nivel": 4.321429,
+   "variabilidade": 4.119237,
+   "prazo_efetivo": 49.732143,
+   "atraso_recente": 5.533333,
+   "atraso_antigo": 3.878049,
+   "piora_confirmada": false,
+   "selo_cronico_estavel": false,
+   "selo_invisivel": false,
+   "sazonais": [],
+   "componentes": [
+    [
+     "nivel",
+     1.9
+    ],
+    [
+     "variabilidade",
+     7.2
+    ],
+    [
+     "mudanca",
+     3.3
+    ],
+    [
+     "compra",
+     2.2
+    ],
+    [
+     "faturamento",
+     5.2
+    ],
+    [
+     "limite",
+     5.9
+    ]
+   ],
+   "alerta": "Supermercado Estrela do Vale pesa no índice principalmente por causa de: variabilidade (imprevisibilidade) e ocupação do limite de crédito. Ação: nenhuma cobrança necessária agora; vale só acompanhar o saldo em aberto.",
+   "atraso_esperado": 4.321429,
+   "base_atraso_esperado": "média histórica dele, fora dos meses sazonais"
+  },
+  {
+   "cod": 10,
+   "indice": 8.9,
+   "valor_em_risco_centavos": 0,
+   "saldo_aberto_centavos": 0,
+   "qtd_vencidos_hoje": 0,
+   "nivel": 1.780822,
+   "variabilidade": 1.792271,
+   "prazo_efetivo": 1.780822,
+   "atraso_recente": 1.666667,
+   "atraso_antigo": 1.818182,
+   "piora_confirmada": false,
+   "selo_cronico_estavel": false,
+   "selo_invisivel": false,
+   "sazonais": [],
+   "componentes": [
+    [
+     "nivel",
+     0.8
+    ],
+    [
+     "variabilidade",
+     3.1
+    ],
+    [
+     "mudanca",
+     0
+    ],
+    [
+     "compra",
+     3.9
+    ],
+    [
+     "faturamento",
+     1.1
+    ],
+    [
+     "limite",
+     0
+    ]
+   ],
+   "alerta": "Hortifrúti Terra Boa tem risco baixo hoje: nenhum sinal do histórico dele preocupa. Ação: nenhuma.",
+   "atraso_esperado": 1.780822,
+   "base_atraso_esperado": "média histórica dele, fora dos meses sazonais"
+  },
+  {
+   "cod": 11,
+   "indice": 31.7,
+   "valor_em_risco_centavos": 1463600,
+   "saldo_aberto_centavos": 4617000,
+   "qtd_vencidos_hoje": 1,
+   "nivel": 14,
+   "variabilidade": 7.60031,
+   "prazo_efetivo": 35,
+   "atraso_recente": 11.538462,
+   "atraso_antigo": 14.842105,
+   "piora_confirmada": false,
+   "selo_cronico_estavel": false,
+   "selo_invisivel": false,
+   "sazonais": [],
+   "componentes": [
+    [
+     "nivel",
+     6.1
+    ],
+    [
+     "variabilidade",
+     13.2
+    ],
+    [
+     "mudanca",
+     0
+    ],
+    [
+     "compra",
+     5.4
+    ],
+    [
+     "faturamento",
+     2.1
+    ],
+    [
+     "limite",
+     4.9
+    ]
+   ],
+   "alerta": "Casa de Carnes Bom Corte pesa no índice principalmente por causa de: variabilidade (imprevisibilidade) e nível de atraso histórico. Ação: segue no fluxo normal de cobrança da tela Hoje; nada aqui pede tratamento especial além disso.",
+   "atraso_esperado": 14,
+   "base_atraso_esperado": "média histórica dele, fora dos meses sazonais"
+  },
+  {
+   "cod": 12,
+   "indice": 44.4,
+   "valor_em_risco_centavos": 1451400,
+   "saldo_aberto_centavos": 3269000,
+   "qtd_vencidos_hoje": 4,
+   "nivel": 34.54,
+   "variabilidade": 11.517309,
+   "prazo_efetivo": 48.54,
+   "atraso_recente": 34.818182,
+   "atraso_antigo": 34.461538,
+   "piora_confirmada": false,
+   "selo_cronico_estavel": true,
+   "selo_invisivel": false,
+   "sazonais": [],
+   "componentes": [
+    [
+     "nivel",
+     15
+    ],
+    [
+     "variabilidade",
+     20
+    ],
+    [
+     "mudanca",
+     0.3
+    ],
+    [
+     "compra",
+     0.2
+    ],
+    [
+     "faturamento",
+     0.7
+    ],
+    [
+     "limite",
+     8.2
+    ]
+   ],
+   "alerta": "Adega e Empório Boa Vista aparece como atrasado quase todo mês, mas isso não é risco: há 50 títulos pagos, ele atrasa de forma muito consistente (desvio-padrão de 12 dias em torno de 35 dias) e o atraso atual não fugiu desse padrão. O prazo contratado com ele é \"14 dias\", mas na prática o dinheiro entra em torno de 49 dias corridos depois da emissão. Ação: parar de tratar isso como cobrança urgente — se fizer sentido, renegocie o prazo contratado para perto do que ele já pratica, e pare de gastar tempo da equipe ligando para quem sempre paga.",
+   "atraso_esperado": 34.54,
+   "base_atraso_esperado": "média histórica dele, fora dos meses sazonais"
+  }
+ ],
+ "regua": [
+  {
+   "cod": 3,
+   "tom": "conversa_mudanca",
+   "motivo": "O atraso médio subiu de 6 para 15 dias nos últimos 6 meses — mudança confirmada, acima da variação normal dele. Quem está piorando precisa de conversa, não de ameaça.",
+   "qtd_titulos_no_texto": 5,
+   "total_no_texto": "R$ 126.780,00",
+   "tamanhos": {
+    "email": 1032,
+    "email_assunto": 57,
+    "ligacao": 650,
+    "whatsapp": 938
+   }
+  },
+  {
+   "cod": 1,
+   "tom": "primeiro_aviso_cordial",
+   "motivo": "Historicamente atrasa 3 dias, e os títulos de hoje estão em média 51 dias vencidos — bem fora do padrão dele. Cliente que costuma pagar bem merece uma pergunta antes de uma cobrança.",
+   "qtd_titulos_no_texto": 1,
+   "total_no_texto": "R$ 60.130,00",
+   "tamanhos": {
+    "email": 641,
+    "email_assunto": 41,
+    "ligacao": 565,
+    "whatsapp": 527
+   }
+  },
+  {
+   "cod": 2,
+   "tom": "contato_preventivo",
+   "motivo": "Não tem nada vencido e nunca foi cobrado, mas o atraso médio subiu de 6 para 7 dias e o saldo em aberto é de R$ 130.360,00. Contato de relacionamento, não de cobrança.",
+   "qtd_titulos_no_texto": 3,
+   "total_no_texto": "R$ 130.360,00",
+   "tamanhos": {
+    "email": 664,
+    "email_assunto": 71,
+    "ligacao": 606,
+    "whatsapp": 546
+   }
+  },
+  {
+   "cod": 6,
+   "tom": "lembrete_leve",
+   "motivo": "Os títulos vencidos hoje estão em média 2 dias em atraso, dentro do que ele já pratica (11 dias em média). Nada aqui indica problema novo.",
+   "qtd_titulos_no_texto": 1,
+   "total_no_texto": "R$ 31.000,00",
+   "tamanhos": {
+    "email": 417,
+    "email_assunto": 46,
+    "ligacao": 431,
+    "whatsapp": 357
+   }
+  },
+  {
+   "cod": 11,
+   "tom": "primeiro_aviso_cordial",
+   "motivo": "Historicamente atrasa 14 dias, e os títulos de hoje estão em média 44 dias vencidos — bem fora do padrão dele. Cliente que costuma pagar bem merece uma pergunta antes de uma cobrança.",
+   "qtd_titulos_no_texto": 1,
+   "total_no_texto": "R$ 21.280,00",
+   "tamanhos": {
+    "email": 644,
+    "email_assunto": 43,
+    "ligacao": 567,
+    "whatsapp": 529
+   }
+  },
+  {
+   "cod": 12,
+   "tom": "lembrete_leve",
+   "motivo": "Atrasa de forma muito consistente (35 dias em média, variação de ± 12) e nunca falhou em 50 títulos pagos. O atraso de hoje está dentro do padrão dele — lembrete leve, com proposta de acertar o prazo no contrato.",
+   "qtd_titulos_no_texto": 4,
+   "total_no_texto": "R$ 20.520,00",
+   "tamanhos": {
+    "email": 956,
+    "email_assunto": 45,
+    "ligacao": 536,
+    "whatsapp": 860
+   }
+  },
+  {
+   "cod": 4,
+   "tom": "lembrete_leve",
+   "motivo": "Atrasa de forma muito consistente (18 dias em média, variação de ± 1) e nunca falhou em 75 títulos pagos. O atraso de hoje está dentro do padrão dele — lembrete leve, com proposta de acertar o prazo no contrato.",
+   "qtd_titulos_no_texto": 2,
+   "total_no_texto": "R$ 30.800,00",
+   "tamanhos": {
+    "email": 809,
+    "email_assunto": 36,
+    "ligacao": 523,
+    "whatsapp": 713
+   }
+  },
+  {
+   "cod": 5,
+   "tom": "reaproximacao_comercial",
+   "motivo": "Está há 93 dias sem comprar, quando o intervalo normal dele é de 16 dias — 5,8 vezes o habitual. Parar de comprar é sinal comercial: a conversa vem antes da cobrança.",
+   "qtd_titulos_no_texto": 2,
+   "total_no_texto": "R$ 12.170,00",
+   "tamanhos": {
+    "email": 760,
+    "email_assunto": 65,
+    "ligacao": 637,
+    "whatsapp": 635
+   }
+  }
+ ],
+ "semana": {
+  "recebido_centavos": 23741000,
+  "recebido_qtd": 12,
+  "atraso_medio_recebido": 12.166666666666666,
+  "venceu_centavos": 16415000,
+  "venceu_qtd": 7,
+  "nao_entrou_centavos": 11358000,
+  "nao_entrou_qtd": 4,
+  "emitido_centavos": 8608000,
+  "emitido_qtd": 7
+ },
+ "descobertas": [
+  {
+   "tipo": "piorou",
+   "cods": [
+    3
+   ],
+   "valor_em_risco_centavos": 8940600,
+   "frase": "Supermercado Vila Nova passou a pagar mais tarde: de 6 para 15 dias de atraso nos últimos 6 meses. Mudança confirmada, que pede conversa, não cobrança dura."
+  },
+  {
+   "tipo": "invisivel",
+   "cods": [
+    2
+   ],
+   "valor_em_risco_centavos": 4158500,
+   "frase": "Rede Bom Preço Supermercados nunca foi cobrado e não tem nada vencido, mas o atraso subiu de 6 para 7 dias. São R$ 130.360,00 em aberto que nenhuma lista de vencidos mostra."
+  },
+  {
+   "tipo": "estavel",
+   "cods": [
+    12,
+    4
+   ],
+   "valor_em_risco_centavos": 2560600,
+   "frase": "Adega e Empório Boa Vista e Adega Serra Azul atrasam sempre igual e nunca falharam. Acertar o prazo no contrato economiza cobrança e tempo da equipe."
+  }
+ ],
+ "previsao": {
+  "planilha": [
+   47670000,
+   18682000,
+   20852000,
+   2635000
+  ],
+  "esperado": [
+   22018700,
+   14386500,
+   11572700,
+   21865600
+  ],
+  "conservador": [
+   9507800,
+   14895900,
+   19680200,
+   18618700
+  ],
+  "otimista": [
+   30047000,
+   14791000,
+   21384800,
+   6628600
+  ],
+  "total_planilha": 89839000,
+  "total_esperado": 69843500,
+  "diferenca": 19995500,
+  "fora_da_janela": 13273300,
+  "descontado": 15073200,
+  "semanas_invertidas": [
+   2,
+   4
+  ],
+  "titulos_projetados": 40
+ }
+}

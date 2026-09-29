@@ -1,0 +1,27 @@
+{
+  "skill_name": "apresentacao-de-impacto",
+  "observacao": "Casos para a bateria de teste com subagentes. Rode com o skill-creator quando quiser medir a skill fora do caso que a originou.",
+  "evals": [
+    {
+      "id": 1,
+      "nome": "proposta-outro-setor",
+      "prompt": "Preciso montar uma proposta comercial para uma rede de 4 clínicas odontológicas. Os números que eles me passaram: 1.100 orçamentos apresentados por mês, 28% viram tratamento fechado, ticket médio de R$ 3.200, margem de contribuição 45%. Eles gastam R$ 90 mil por mês em marketing. Meu projeto custa R$ 38.000 em 10 meses, dividido em diagnóstico (4 semanas, R$ 9.000), implementação (10 semanas, R$ 17.000) e acompanhamento (6 meses, R$ 12.000). Faz uma apresentação bonita pra eu mandar pra eles.",
+      "expected_output": "HTML de tela cheia com palco fixo, sequência de telas (capa com tira de números, problema em três números, decomposição, fases, investimento, retorno interativo, fechamento), gráficos desenhados em JS, e o script de conferência rodado sem estouro.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "nome": "material-nao-comercial",
+      "prompt": "tenho que apresentar o resultado do trimestre pra diretoria na quinta. os dados: receita de R$ 4,2 mi (meta era 4,8), churn subiu de 2,1% pra 3,4%, CAC foi de R$ 890 pra R$ 1.240, e a gente contratou 12 pessoas no período. quero algo que não pareça mais um powerpoint feio, e que deixe claro que o problema é retenção e não aquisição",
+      "expected_output": "Apresentação com foco na conclusão (o problema é retenção), títulos que entregam conclusão em vez de assunto, números grandes com a conta embaixo, e procedência dos dados. Não precisa ter tela interativa se não houver uma alavanca única.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "nome": "uma-tela-so",
+      "prompt": "me faz só um gráfico de cascata mostrando por que meu custo por lead subiu de R$ 62 pra R$ 104 no ano. o custo por clique foi de R$ 3,10 pra R$ 3,45 e a taxa de conversão da landing caiu de 5% pra 3,3%. quero colar isso num slide que já existe",
+      "expected_output": "Uma tela só, com a cascata decomposta corretamente incluindo o termo cruzado, os pesos percentuais de cada parcela escritos, e a soma fechando exata. Sem moldura de navegação.",
+      "files": []
+    }
+  ]
+}

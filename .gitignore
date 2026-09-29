@@ -1,0 +1,34 @@
+# Segredos e credenciais: nunca devem entrar num repositório público
+.env
+.env.*
+*.pem
+*.key
+*senha*
+*password*
+*palavras-passe*
+credentials*.json
+
+# Dados pessoais e financeiros
+*.xlsx
+*.xls
+*.csv
+
+# Exceção deliberada: base 100% fictícia (criada para fins didáticos), necessária para rodar a Central
+!projetos/central-credito-cobranca/Base_bruta.xlsx
+
+# Arquivos que a Central gera ao rodar (a demo publicada é o demo.html)
+projetos/central-credito-cobranca/central.html
+projetos/central-credito-cobranca/para_enviar/
+
+# Saída de execução e cache
+__pycache__/
+*.pyc
+*.log
+node_modules/
+
+# Sistema e editor
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.claude/

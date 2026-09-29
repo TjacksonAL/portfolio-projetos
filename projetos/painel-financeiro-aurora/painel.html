@@ -1,0 +1,1134 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Aurora — Caixa 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg-0:#080b14;
+  --bg-1:#0d1220;
+  --bg-2:#0a0e1a;
+  --panel: rgba(255,255,255,0.045);
+  --panel-border: rgba(255,255,255,0.09);
+  --panel-hi: rgba(255,255,255,0.07);
+  --ink-0:#f4f6fb;
+  --ink-1:#aab2c5;
+  --ink-2:#6c7690;
+  --accent:#5ee7d0;
+  --accent-2:#8b7cf6;
+  --c-month:#22d3ee;
+  --c-region:#a78bfa;
+  --c-cat:#34d399;
+  --c-client:#fbbf24;
+  --danger:#fb7185;
+  --radius-lg:22px;
+  --radius-md:16px;
+  --radius-sm:10px;
+  --shadow-lift: 0 20px 60px -20px rgba(0,0,0,0.6), 0 2px 8px rgba(0,0,0,0.3);
+}
+*{box-sizing:border-box;}
+html,body{
+  margin:0; padding:0; width:100%;
+  overflow-x:hidden;
+  background:var(--bg-0);
+  color:var(--ink-0);
+  font-family:'Inter',system-ui,-apple-system,sans-serif;
+  -webkit-font-smoothing:antialiased;
+}
+body{
+  min-height:100vh;
+  background:
+    radial-gradient(1100px 700px at 12% -10%, rgba(139,124,246,0.16), transparent 60%),
+    radial-gradient(900px 600px at 88% 8%, rgba(94,231,208,0.10), transparent 55%),
+    radial-gradient(1200px 900px at 50% 110%, rgba(34,211,238,0.08), transparent 60%),
+    linear-gradient(180deg, var(--bg-1) 0%, var(--bg-0) 45%, var(--bg-2) 100%);
+  background-attachment:fixed;
+  position:relative;
+}
+body::before{
+  content:"";
+  position:fixed; inset:0;
+  pointer-events:none;
+  opacity:0.5;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.012) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.012) 1px, transparent 1px);
+  background-size:64px 64px;
+  -webkit-mask-image:radial-gradient(ellipse 80% 60% at 50% 0%, black 30%, transparent 75%);
+          mask-image:radial-gradient(ellipse 80% 60% at 50% 0%, black 30%, transparent 75%);
+  z-index:0;
+}
+body::after{
+  content:"";
+  position:fixed; inset:-10%;
+  pointer-events:none;
+  opacity:0.55;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+  mix-blend-mode:overlay;
+  z-index:0;
+}
+.wrap{position:relative; z-index:1; max-width:1360px; margin:0 auto; padding:28px clamp(16px,3vw,40px) 80px;}
+
+/* ---------- Top nav ---------- */
+.topbar{
+  display:flex; align-items:center; justify-content:space-between; gap:16px;
+  padding:6px 2px 28px;
+}
+.brand{display:flex; align-items:center; gap:12px;}
+.brand .mark{
+  width:38px; height:38px; border-radius:11px;
+  background:linear-gradient(135deg, var(--accent), var(--accent-2));
+  display:flex; align-items:center; justify-content:center;
+  font-family:'Space Grotesk',sans-serif; font-weight:700; color:#0a0e1a; font-size:17px;
+  box-shadow:0 6px 20px -4px rgba(94,231,208,0.5);
+}
+.brand .txt{display:flex; flex-direction:column; line-height:1.15;}
+.brand .txt b{font-family:'Space Grotesk',sans-serif; font-size:16.5px; letter-spacing:0.01em; color:var(--ink-0); font-weight:600;}
+.brand .txt span{font-size:11.5px; color:var(--ink-2); letter-spacing:0.04em;}
+
+.tabs{
+  display:flex; gap:4px; padding:5px; border-radius:100px;
+  background:var(--panel); border:1px solid var(--panel-border);
+  backdrop-filter:blur(20px);
+}
+.tab-btn{
+  appearance:none; border:none; cursor:pointer;
+  padding:9px 20px; border-radius:100px;
+  font-family:'Inter',sans-serif; font-weight:600; font-size:13.5px;
+  color:var(--ink-1); background:transparent;
+  transition:color .25s ease;
+  position:relative;
+}
+.tab-btn.active{color:#08111a;}
+.tab-pill{
+  position:absolute; inset:0; margin:auto; border-radius:100px;
+  background:linear-gradient(135deg, var(--accent), var(--accent-2));
+  z-index:-1; transition:transform .35s cubic-bezier(.4,0,.2,1);
+}
+
+.view{display:none;}
+.view.active{display:block;}
+
+/* ---------- reveal animation ---------- */
+.reveal{opacity:0; transform:translateY(18px); animation:revealIn .7s cubic-bezier(.16,1,.3,1) forwards;}
+@keyframes revealIn{to{opacity:1; transform:translateY(0);}}
+
+/* ---------- Hero KPI ---------- */
+.hero{
+  position:relative;
+  border-radius:var(--radius-lg);
+  padding:clamp(28px,4vw,48px) clamp(24px,5vw,56px);
+  background:linear-gradient(155deg, rgba(139,124,246,0.14), rgba(94,231,208,0.05) 55%, rgba(255,255,255,0.02));
+  border:1px solid var(--panel-border);
+  box-shadow:var(--shadow-lift);
+  overflow:hidden;
+  margin-bottom:20px;
+}
+.hero::before{
+  content:"";
+  position:absolute; width:420px; height:420px; border-radius:50%;
+  background:radial-gradient(circle, rgba(94,231,208,0.20), transparent 70%);
+  top:-180px; right:-120px; filter:blur(10px);
+  animation:float1 14s ease-in-out infinite;
+}
+.hero::after{
+  content:"";
+  position:absolute; width:320px; height:320px; border-radius:50%;
+  background:radial-gradient(circle, rgba(139,124,246,0.18), transparent 70%);
+  bottom:-160px; left:10%; filter:blur(10px);
+  animation:float2 17s ease-in-out infinite;
+}
+@keyframes float1{0%,100%{transform:translate(0,0);} 50%{transform:translate(-30px,25px);}}
+@keyframes float2{0%,100%{transform:translate(0,0);} 50%{transform:translate(25px,-20px);}}
+.hero-label{
+  font-size:12.5px; font-weight:700; letter-spacing:0.16em; text-transform:uppercase;
+  color:var(--accent); display:flex; align-items:center; gap:8px; margin-bottom:14px;
+  position:relative; z-index:1;
+}
+.hero-label .dot{width:6px; height:6px; border-radius:50%; background:var(--accent); box-shadow:0 0 12px 2px var(--accent);}
+.hero-number{
+  font-family:'Space Grotesk',sans-serif; font-weight:700; color:var(--ink-0);
+  font-size:clamp(48px, 9.5vw, 108px);
+  line-height:0.98; letter-spacing:-0.02em;
+  position:relative; z-index:1;
+  white-space:nowrap;
+  background:linear-gradient(180deg, #ffffff 0%, #cdd6f0 100%);
+  -webkit-background-clip:text; background-clip:text; color:transparent;
+}
+.hero-sub{
+  margin-top:16px; font-size:14.5px; color:var(--ink-1); max-width:640px; position:relative; z-index:1;
+}
+.hero-sub b{color:var(--ink-0); font-weight:600;}
+
+/* ---------- Secondary KPI grid ---------- */
+.kpi-grid{
+  display:grid; grid-template-columns:repeat(4,1fr); gap:16px; margin-bottom:28px;
+}
+.kpi-card{
+  background:var(--panel); border:1px solid var(--panel-border); border-radius:var(--radius-md);
+  padding:20px 22px; backdrop-filter:blur(20px);
+  box-shadow:0 10px 30px -18px rgba(0,0,0,0.6);
+  transition:transform .3s ease, border-color .3s ease;
+  min-width:0;
+}
+.kpi-card:hover{transform:translateY(-3px); border-color:rgba(255,255,255,0.18);}
+.kpi-label{
+  font-size:11px; font-weight:700; letter-spacing:0.13em; text-transform:uppercase; color:var(--ink-2);
+  margin-bottom:10px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+}
+.kpi-value{
+  font-family:'Space Grotesk',sans-serif; font-weight:600; font-size:clamp(19px,2.6vw,28px);
+  color:var(--ink-0); line-height:1.1; overflow-wrap:break-word; word-break:normal;
+}
+.kpi-value small{font-size:0.5em; color:var(--ink-2); font-weight:500;}
+.kpi-foot{margin-top:10px; font-size:12px; color:var(--ink-2); display:flex; align-items:center; gap:6px;}
+.kpi-bar{margin-top:12px; height:5px; border-radius:4px; background:rgba(255,255,255,0.07); overflow:hidden;}
+.kpi-bar i{display:block; height:100%; border-radius:4px; transition:width 1s cubic-bezier(.16,1,.3,1);}
+
+/* ---------- Filters ---------- */
+.filters{
+  display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:26px;
+}
+.filter-panel{
+  background:var(--panel); border:1px solid var(--panel-border); border-radius:var(--radius-md);
+  padding:18px 20px; backdrop-filter:blur(20px); min-width:0;
+}
+.filter-head{display:flex; align-items:center; justify-content:space-between; margin-bottom:12px;}
+.filter-title{font-size:11px; font-weight:700; letter-spacing:0.13em; text-transform:uppercase; color:var(--ink-2);}
+.filter-reset{
+  font-size:11.5px; color:var(--ink-1); background:none; border:none; cursor:pointer; font-family:'Inter';
+  padding:2px 6px; border-radius:6px; transition:color .2s;
+}
+.filter-reset:hover{color:var(--accent);}
+.chip-row{display:flex; flex-wrap:wrap; gap:8px;}
+.chip{
+  appearance:none; cursor:pointer; font-family:'Inter',sans-serif; font-weight:600; font-size:12.5px;
+  padding:8px 14px; border-radius:100px; border:1px solid var(--panel-border);
+  background:rgba(255,255,255,0.03); color:var(--ink-1);
+  transition:all .22s ease; white-space:nowrap;
+}
+.chip .n{opacity:0.55; font-weight:500; margin-left:4px; font-size:0.9em;}
+.chip.active{
+  background:linear-gradient(135deg, rgba(94,231,208,0.22), rgba(139,124,246,0.20));
+  border-color:rgba(94,231,208,0.5); color:var(--ink-0);
+  box-shadow:0 0 0 1px rgba(94,231,208,0.12) inset;
+}
+.chip:not(.active):hover{border-color:rgba(255,255,255,0.25); color:var(--ink-0);}
+.chip.disabled{opacity:0.28; cursor:not-allowed; pointer-events:none; text-decoration:line-through;}
+
+/* ---------- Charts grid ---------- */
+.charts-grid{display:grid; grid-template-columns:1fr 1fr; gap:16px;}
+.chart-card{
+  background:var(--panel); border:1px solid var(--panel-border); border-radius:var(--radius-md);
+  padding:20px 22px 14px; backdrop-filter:blur(20px); min-width:0; position:relative;
+  box-shadow:0 10px 30px -18px rgba(0,0,0,0.6);
+}
+.chart-head{display:flex; align-items:baseline; justify-content:space-between; margin-bottom:6px; gap:10px;}
+.chart-title{font-size:14px; font-weight:700; color:var(--ink-0);}
+.chart-meta{font-size:11.5px; color:var(--ink-2);}
+.chart-svg-wrap{position:relative; width:100%;}
+.chart-svg-wrap svg{width:100%; height:auto; display:block; overflow:visible;}
+.bar-rect{transition:width 0.7s cubic-bezier(.16,1,.3,1), height 0.7s cubic-bezier(.16,1,.3,1), x .7s cubic-bezier(.16,1,.3,1), y .7s cubic-bezier(.16,1,.3,1), opacity .4s ease, fill-opacity .4s ease;}
+.bar-label,.bar-value,.axis-label{transition:opacity .3s ease, x .7s cubic-bezier(.16,1,.3,1), y .7s cubic-bezier(.16,1,.3,1);}
+.bar-hitbox{fill:transparent; cursor:pointer;}
+
+.tooltip{
+  position:fixed; z-index:50; pointer-events:none;
+  background:rgba(15,19,32,0.92); border:1px solid rgba(255,255,255,0.14);
+  border-radius:12px; padding:12px 15px; min-width:200px; max-width:300px;
+  box-shadow:0 20px 50px -12px rgba(0,0,0,0.7);
+  backdrop-filter:blur(16px);
+  opacity:0; transform:translateY(4px) scale(0.98);
+  transition:opacity .15s ease, transform .15s ease;
+}
+.tooltip.show{opacity:1; transform:translateY(0) scale(1);}
+.tt-title{font-size:12.5px; font-weight:700; color:var(--ink-0); margin-bottom:2px;}
+.tt-value{font-family:'Space Grotesk',sans-serif; font-size:16px; font-weight:600; margin-bottom:8px;}
+.tt-sub{font-size:10.5px; text-transform:uppercase; letter-spacing:0.08em; color:var(--ink-2); margin-bottom:5px; margin-top:6px;}
+.tt-row{display:flex; align-items:flex-start; justify-content:space-between; gap:10px; font-size:12px; color:var(--ink-1); padding:3px 0;}
+.tt-row span{flex:1 1 auto; min-width:0;}
+.tt-row b{color:var(--ink-0); font-weight:600; flex:none; white-space:nowrap;}
+.tt-row .tdot{width:6px;height:6px;border-radius:50%;display:inline-block;margin-right:6px;}
+
+.empty-state{
+  grid-column:1/-1; text-align:center; padding:70px 20px; color:var(--ink-1);
+  border:1px dashed var(--panel-border); border-radius:var(--radius-md); background:var(--panel);
+}
+.empty-state b{display:block; font-size:18px; color:var(--ink-0); margin-bottom:6px; font-family:'Space Grotesk',sans-serif;}
+
+/* ---------- Insights tab ---------- */
+.ins-hero{margin-bottom:26px;}
+.ins-hero h1{
+  font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:clamp(26px,3.4vw,38px);
+  margin:0 0 10px; background:linear-gradient(180deg,#fff,#c9d2ee); -webkit-background-clip:text; background-clip:text; color:transparent;
+}
+.ins-hero p{color:var(--ink-1); font-size:14.5px; max-width:680px; line-height:1.6; margin:0;}
+
+.ins-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:16px; margin-bottom:16px;}
+.ins-card{
+  background:var(--panel); border:1px solid var(--panel-border); border-radius:var(--radius-md);
+  padding:24px 26px; backdrop-filter:blur(20px); box-shadow:0 10px 30px -18px rgba(0,0,0,0.6); min-width:0;
+}
+.ins-card.wide{grid-column:1/-1;}
+.ins-kicker{
+  display:inline-flex; align-items:center; gap:6px; font-size:10.5px; font-weight:700; letter-spacing:0.12em;
+  text-transform:uppercase; padding:5px 10px; border-radius:100px; margin-bottom:14px;
+}
+.ins-card h3{font-family:'Space Grotesk',sans-serif; font-size:19px; margin:0 0 10px; color:var(--ink-0); font-weight:600;}
+.ins-card p{font-size:13.8px; line-height:1.65; color:var(--ink-1); margin:0 0 8px;}
+.ins-card p b{color:var(--ink-0); font-weight:600;}
+.ins-stat-row{display:flex; gap:22px; margin-top:16px; flex-wrap:wrap;}
+.ins-stat{}
+.ins-stat .v{font-family:'Space Grotesk',sans-serif; font-size:24px; font-weight:600; color:var(--ink-0);}
+.ins-stat .l{font-size:10.5px; color:var(--ink-2); text-transform:uppercase; letter-spacing:0.08em; margin-top:2px;}
+
+.mini-bars{display:flex; align-items:flex-end; gap:6px; height:54px; margin-top:16px;}
+.mini-bars i{flex:1; border-radius:5px 5px 2px 2px; background:linear-gradient(180deg, var(--accent), rgba(94,231,208,0.25)); transition:height 1s cubic-bezier(.16,1,.3,1);}
+
+.reco-list{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:12px;}
+.reco-list li{display:flex; gap:14px; align-items:flex-start;}
+.reco-num{
+  flex:none; width:26px; height:26px; border-radius:8px; display:flex; align-items:center; justify-content:center;
+  background:linear-gradient(135deg, var(--accent), var(--accent-2)); color:#08111a; font-weight:700; font-size:12.5px;
+  font-family:'Space Grotesk',sans-serif;
+}
+.reco-list p{margin:0; font-size:13.8px; color:var(--ink-1); line-height:1.55; padding-top:3px;}
+.reco-list p b{color:var(--ink-0);}
+
+.concentration-bar{display:flex; height:34px; border-radius:10px; overflow:hidden; margin-top:16px; border:1px solid var(--panel-border);}
+.concentration-bar div{display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:700; color:#08111a; transition:width 1s cubic-bezier(.16,1,.3,1);}
+
+footer.credit{text-align:center; color:var(--ink-2); font-size:11.5px; margin-top:40px; letter-spacing:0.02em;}
+
+@media (max-width:980px){
+  .kpi-grid{grid-template-columns:repeat(2,1fr);}
+  .filters{grid-template-columns:1fr;}
+  .charts-grid{grid-template-columns:1fr;}
+  .ins-grid{grid-template-columns:1fr;}
+}
+@media (max-width:560px){
+  .kpi-grid{grid-template-columns:1fr;}
+  .topbar{flex-direction:column; align-items:flex-start; gap:14px;}
+  .tabs{align-self:stretch;}
+  .tab-btn{flex:1;}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="topbar reveal">
+    <div class="brand">
+      <div class="mark">A</div>
+      <div class="txt"><b>Distribuidora Aurora</b><span>CAIXA · 1º SEMESTRE 2026</span></div>
+    </div>
+    <div class="tabs" id="tabs">
+      <button class="tab-btn active" data-tab="painel">Painel<span class="tab-pill" id="tabPill"></span></button>
+      <button class="tab-btn" data-tab="insights">Insights</button>
+    </div>
+  </div>
+
+  <!-- ================= PAINEL ================= -->
+  <div class="view active" id="view-painel">
+
+    <div class="hero reveal" style="animation-delay:.05s">
+      <div class="hero-label"><span class="dot"></span>Total recebido no semestre</div>
+      <div class="hero-number" id="heroTotal">R$ 0,00</div>
+      <div class="hero-sub" id="heroSub">Carregando…</div>
+    </div>
+
+    <div class="kpi-grid">
+      <div class="kpi-card reveal" style="animation-delay:.10s">
+        <div class="kpi-label">Nº de Recebimentos</div>
+        <div class="kpi-value" id="kpiCount">0</div>
+        <div class="kpi-bar"><i id="kpiCountBar" style="width:0%;background:var(--c-month)"></i></div>
+      </div>
+      <div class="kpi-card reveal" style="animation-delay:.15s">
+        <div class="kpi-label">Ticket Médio</div>
+        <div class="kpi-value" id="kpiTicket">R$ 0,00</div>
+        <div class="kpi-bar"><i id="kpiTicketBar" style="width:0%;background:var(--c-region)"></i></div>
+      </div>
+      <div class="kpi-card reveal" style="animation-delay:.20s">
+        <div class="kpi-label">Melhor Mês</div>
+        <div class="kpi-value" id="kpiMonth">—</div>
+        <div class="kpi-foot" id="kpiMonthFoot">—</div>
+      </div>
+      <div class="kpi-card reveal" style="animation-delay:.25s">
+        <div class="kpi-label">Maior Cliente</div>
+        <div class="kpi-value" id="kpiClient" style="font-size:clamp(14px,1.8vw,19px)">—</div>
+        <div class="kpi-foot" id="kpiClientFoot">—</div>
+      </div>
+    </div>
+
+    <div class="filters">
+      <div class="filter-panel reveal" style="animation-delay:.30s">
+        <div class="filter-head"><span class="filter-title">Região</span><button class="filter-reset" data-reset="region">Selecionar todas</button></div>
+        <div class="chip-row" id="regionChips"></div>
+      </div>
+      <div class="filter-panel reveal" style="animation-delay:.34s">
+        <div class="filter-head"><span class="filter-title">Categoria</span><button class="filter-reset" data-reset="category">Selecionar todas</button></div>
+        <div class="chip-row" id="categoryChips"></div>
+      </div>
+    </div>
+
+    <div class="charts-grid" id="chartsGrid">
+      <div class="chart-card reveal" style="animation-delay:.38s">
+        <div class="chart-head"><span class="chart-title">Caixa por Mês</span><span class="chart-meta">jan – jun 2026</span></div>
+        <div class="chart-svg-wrap" id="chart-month"></div>
+      </div>
+      <div class="chart-card reveal" style="animation-delay:.42s">
+        <div class="chart-head"><span class="chart-title">Caixa por Região</span><span class="chart-meta" id="meta-region"></span></div>
+        <div class="chart-svg-wrap" id="chart-region"></div>
+      </div>
+      <div class="chart-card reveal" style="animation-delay:.46s">
+        <div class="chart-head"><span class="chart-title">Caixa por Categoria</span><span class="chart-meta" id="meta-cat"></span></div>
+        <div class="chart-svg-wrap" id="chart-cat"></div>
+      </div>
+      <div class="chart-card reveal" style="animation-delay:.50s">
+        <div class="chart-head"><span class="chart-title">Ranking de Clientes</span><span class="chart-meta">maior → menor</span></div>
+        <div class="chart-svg-wrap" id="chart-client"></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ================= INSIGHTS ================= -->
+  <div class="view" id="view-insights">
+    <div class="ins-hero reveal">
+      <h1>Leitura do semestre</h1>
+      <p>Panorama do caixa de janeiro a junho de 2026, a partir dos 222 recebimentos registrados na aba Recebimentos. Números absolutos — nenhum dado estimado ou projetado.</p>
+    </div>
+
+    <div class="ins-grid">
+      <div class="ins-card reveal" style="animation-delay:.05s">
+        <span class="ins-kicker" style="background:rgba(34,211,238,0.14); color:var(--c-month)">Trajetória mensal</span>
+        <h3>Abril puxou o semestre; maio foi acomodação, não perda</h3>
+        <p>O caixa saiu de <b>R$ 631.363,98</b> em janeiro para o pico de <b>R$ 864.938,31</b> em abril — melhor mês do semestre. A queda para <b>R$ 599.898,29</b> em maio parece alarmante isolada, mas se explica quase inteiramente por um único cliente: a Supermercado Família pagou <b>R$ 345.062,04</b> em abril e voltou ao patamar normal (R$ 153.040,00) em maio. Não houve saída de outros clientes — junho já recupera para <b>R$ 741.426,85</b>, puxado pela Atacado União Comercial.</p>
+        <div class="mini-bars" id="miniMonths"></div>
+      </div>
+
+      <div class="ins-card reveal" style="animation-delay:.10s">
+        <span class="ins-kicker" style="background:rgba(167,139,250,0.14); color:var(--c-region)">Regiões</span>
+        <h3>Norte/PA lidera; Nordeste/PE perdeu força no 2º trimestre</h3>
+        <p><b>Norte/PA</b> é a região mais forte (27,2% do caixa, R$ 1.149.147,31) e ainda cresceu <b>+R$ 219.929,69</b> do 1º para o 2º trimestre. Já <b>Nordeste/PE</b>, a 3ª colocada, recuou de R$ 557.781,99 para R$ 327.878,98 no mesmo intervalo — queda de <b>R$ 229.903,01</b>, o maior recuo entre todas as regiões. Sudeste/SP também ganhou tração (+R$ 172.588,98).</p>
+        <div class="ins-stat-row">
+          <div class="ins-stat"><div class="v" style="color:var(--c-region)">+R$ 219,9k</div><div class="l">Norte/PA (1º→2º tri)</div></div>
+          <div class="ins-stat"><div class="v" style="color:var(--danger)">−R$ 229,9k</div><div class="l">Nordeste/PE (1º→2º tri)</div></div>
+        </div>
+      </div>
+
+      <div class="ins-card reveal" style="animation-delay:.14s">
+        <span class="ins-kicker" style="background:rgba(52,211,153,0.14); color:var(--c-cat)">Categorias</span>
+        <h3>Hortifruti sustenta o caixa; Bebidas perde espaço</h3>
+        <p><b>Hortifruti</b> é a categoria mais relevante — 39,0% do total (R$ 1.643.579,29) — e seguiu crescendo no 2º trimestre (+R$ 226.417,61). <b>Bebidas</b>, a 2ª categoria (30,2%), caiu <b>R$ 208.044,33</b> no mesmo período. Juntas, Hortifruti e Bebidas ainda respondem por quase 70% do caixa — vale entender por que Bebidas perdeu ritmo antes que a dependência do Hortifruti fique ainda maior.</p>
+      </div>
+
+      <div class="ins-card reveal" style="animation-delay:.18s">
+        <span class="ins-kicker" style="background:rgba(251,191,36,0.14); color:var(--c-client)">Concentração</span>
+        <h3>Caixa concentrado em poucos pagadores</h3>
+        <p>O maior cliente (<b>Supermercado Família</b>) responde sozinho por <b>27,2%</b> do caixa. Os três maiores — Supermercado Família, Adega Ponto do Vinho e Atacado União Comercial — somam <b>65,8%</b> de tudo o que entrou no semestre, em uma base de apenas 14 pagadores distintos.</p>
+        <div class="concentration-bar" id="concBar"></div>
+      </div>
+
+      <div class="ins-card reveal" style="animation-delay:.22s">
+        <span class="ins-kicker" style="background:rgba(251,113,133,0.14); color:var(--danger)">Cadastro</span>
+        <h3>R$ 58.209,18 ainda fora do cadastro</h3>
+        <p>Quatro pagadores (Bar e Restaurante Estrela do Sul, Empório Vila Nova, Mercearia São Joaquim e Padaria e Confeitaria Trigo de Ouro) somam <b>R$ 58.209,18</b> — 1,4% do caixa — sem Região/UF ou Categoria, por não constarem no Cadastro de Clientes. Todas as ocorrências ficaram no 1º trimestre; nenhuma se repetiu no 2º.</p>
+      </div>
+
+      <div class="ins-card wide reveal" style="animation-delay:.26s">
+        <span class="ins-kicker" style="background:rgba(94,231,208,0.14); color:var(--accent)">Recomendações</span>
+        <h3>O que fazer com isso</h3>
+        <ul class="reco-list">
+          <li><div class="reco-num">1</div><p><b>Reduzir a dependência dos três maiores clientes</b> — eles respondem por quase dois terços do caixa. Um plano de expansão de conta para os pagadores de médio porte (Rede Supermercados Mais, Mercadão Central) reduz o risco de concentração.</p></li>
+          <li><div class="reco-num">2</div><p><b>Investigar a queda da Adega Ponto do Vinho no 2º trimestre</b>, principal motor do recuo em Nordeste/PE — entender se é sazonalidade, redução de pedido ou perda de espaço para concorrência.</p></li>
+          <li><div class="reco-num">3</div><p><b>Formalizar os 4 pagadores fora do cadastro.</b> O valor é pequeno, mas fechar essa lacuna evita recebimentos "cegos" para região e categoria em relatórios futuros.</p></li>
+          <li><div class="reco-num">4</div><p><b>Monitorar a queda de Bebidas</b> frente ao crescimento de Hortifruti — vale entender se é perda de participação real ou apenas timing de pedidos dos dois maiores clientes da categoria.</p></li>
+        </ul>
+      </div>
+    </div>
+
+    <footer class="credit">Fonte única: aba Recebimentos, cruzada com Cadastro de Clientes — Controle_Recebimentos.xlsx</footer>
+  </div>
+
+  <footer class="credit" id="painelCredit">Distribuidora Aurora — painel gerado a partir de Controle_Recebimentos.xlsx</footer>
+</div>
+
+<div class="tooltip" id="tooltip"></div>
+
+<script>
+const RAW_ROWS = [{"d":"2026-01-01","m":1,"c":"Atacado Uniao Comercial","v":19870.0,"r":"Sudeste/SP","g":"Mercearia"},{"d":"2026-01-05","m":1,"c":"Supermercado Familia","v":14870.0,"r":"Norte/PA","g":"Hortifruti"},{"d":"2026-01-06","m":1,"c":"Hortifruti Natural","v":32588.48,"r":"Centro-Oeste/GO","g":"Hortifruti"},{"d":"2026-01-08","m":1,"c":"Distribuidora Bebidas Lopes","v":21750.0,"r":"Sul/RS","g":"Bebidas"},{"d":"2026-01-11","m":1,"c":"Adega Ponto do Vinho","v":51323.96,"r":"Nordeste/PE","g":"Bebidas"},{"d":"2026-01-12","m":1,"c":"Hortifruti Natural","v":5350.0,"r":"Centro-Oeste/GO","g":"Hortifruti"},{"d":"2026-01-13","m":1,"c":"Atacado Uniao Comercial","v":18200.0,"r":"Sudeste/SP","g":"Mercearia"},{"d":"2026-01-13","m":1,"c":"Rede Farmacias Popular","v":8179.8,"r":"Sul/PR","g":"Higiene e Limpeza"},{"d":"2026-01-13","m":1,"c":"Rede Supermercados Mais","v":41510.0,"r":"Sudeste/SP","g":"Congelados"},{"d":"2026-01-13","m":1,"c":"Supermercado Familia","v":12800.0,"r":"Norte/PA","g":"Hortifruti"},{"d":"2026-01-13","m":1,"c":"Supermercado Familia","v":17910.0,"r":"Norte/PA","g":"Hortifruti"},{"d":"2026-01-14","m":1,"c":"Adega Ponto do Vinho","v":7481.72,"r":"Nordeste/PE","g":"Bebidas"},{"d":"2026-01-14","m":1,"c":"Mercadao Central","v":6510.0,"r":"Nordeste/CE","g":"Mercearia"},{"d":"2026-01-15","m":1,"c":"Frigorifico Vale Verde","v":5704.87,"r":"Centro-Oeste/MT","g":"Congelados"},{"d":"2026-01-16","m":1,"c":"Distribuidora Bebidas Lopes","v":13230.0,"r":"Sul/RS","g":"Bebidas"},{"d":"2026-01-16","m":1,"c":"Distribuidora Bebidas Lopes","v":11250.0,"r":"Sul/RS","g":"Bebidas"},{"d":"2026-01-16","m":1,"c":"Hortifruti Natural","v":48773.87,"r":"Centro-Oeste/GO","g":"Hortifruti"},{"d":"2026-01-16","m":1,"c":"Supermercado Familia","v":8040.0,"r":"Norte/PA","g":"Hortifruti"},{"d":"2026-01-19","m":1,"c":"Distribuidora Bebidas Lopes","v":33440.0,"r":"Sul/RS","g":"Bebidas"},{"d":"2026-01-19","m":1,"c":"Supermercado Familia","v":53640.0,"r":"Norte/PA","g":"Hortifruti"},{"d":"2026-01-20","m":1,"c":"Mercadao Central","v":5740.0,"r":"Nordeste/CE","g":"Mercearia"},{"d":"2026-01-21","m":1,"c":"Mercadao Central","v":20530.0,"r":"Nordeste/CE","g":"Mercearia"},{"d":"2026-01-23","m":1,"c":"Distribuidora Bebidas Lopes","v":8270.44,"r":"Sul/RS","g":"Bebidas"},{"d":"2026-01-26","m":1,"c":"Adega Ponto do Vinho","v":11450.0,"r":"Nordeste/PE","g":"Bebidas"},{"d":"2026-01-26","m":1,"c":"Adega Ponto do Vinho","v":12364.41,"r":"Nordeste/PE","g":"Bebidas"},{"d":"2026-01-26","m":1,"c":"Atacado Uniao Comercial","v":10240.0,"r":"Sudeste/SP","g":"Mercearia"},{"d":"2026-01-26","m":1,"c":"Atacado Uniao Comercial","v":7783.88,"r":"Sudeste/SP","g":"Mercearia"},{"d":"2026-01-29","m":1,"c":"Distribuidora Bebidas Lopes","v":13755.81,"r":"Sul/RS","g":"Bebidas"},{"d":"2026-01-29","m":1,"c":"Distribuidora Bebidas Lopes","v":7020.0,"r":"Sul/RS","g":"Bebidas"},{"d":"2026-01-29","m":1,"c":"Frigorifico Vale Verde","v":5588.94,"r":"Centro-Oeste/MT","g":"Congelados"},{"d":"2026-01-29","m":1,"c":"Hortifruti Natural","v":8920.0,"r":"Centro-Oeste/GO","g":"Hortifruti"},{"d":"2026-01-30","m":1,"c":"Atacado Uniao Comercial","v":16670.0,"r":"Sudeste/SP","g":"Mercearia"},{"d":"2026-01-30","m":1,"c":"Comercial Amazonas","v":857.8,"r":"Norte/AM","g":"Higiene e Limpeza"},{"d":"2026-01-30","m":1,"c":"Supermercado Familia","v":69750.0,"r":"Norte/PA","g":"Hortifruti"},{"d":"2026-02-02","m":2,"c":"Comercial Amazonas","v":380.0,"r":"Norte/AM","g":"Higiene e Limpeza"},{"d":"2026-02-03","m":2,"c":"Adega Ponto do Vinho","v":4580.0,"r":"Nordeste/PE","g":"Bebidas"},{"d":"2026-02-03","m":2,"c":"Atacado Uniao Comercial","v":11080.0,"r":"Sudeste/SP","g":"Mercearia"},{"d":"2026-02-05","m":2,"c":"Adega Ponto do Vinho","v":92480.0,"r":"Nordeste/PE","g":"Bebidas"},{"d":"2026-02-05","m":2,"c":"Distribuidora Bebidas Lopes","v":14980.0,"r":"Sul/RS","g":"Bebidas"},{"d":"2026-02-06","m":2,"c":"Padaria e Confeitaria Trigo de Ouro","v":8330.0,"r":null,"g":null},{"d":"2026-02-09","m":2,"c":"Frigorifico Vale Verde","v":6280.0,"r":"Centro-Oeste/MT","g":"Congelados"},{"d":"2026-02-11","m":2,"c":"Bar e Restaurante Estrela do Sul","v":7040.0,"r":null,"g":null},{"d":"2026-02-12","m":2,"c":"Atacado Uniao Comercial","v":22930.0,"r":"Sudeste/SP","g":"Mercearia"},{"d":"2026-02-13","m":2,"c":"Distribuidora Bebidas Lopes","v":29770.0,"r":"Sul/RS","g":"Bebidas"},{"d":"2026-02-13","m":2,"c":"Rede Supermercados Mais","v":13198.52,"r":"Sudeste/SP","g":"Congelados"},{"d":"2026-02-13","m":2,"c":"Supermercado Familia","v":14580.0,"r":"Norte/PA","g":"Hortifruti"},{"d":"2026-02-15","m":2,"c":"Frigorifico Vale Verde","v":4740.0,"r":"Centro-Oeste/MT","g":"Congelados"},{"d":"2026-02-15","m":2,"c":"Supermercado Familia","v":9226.7,"r":"Norte/PA","g":"Hortifruti"},{"d":"2026-02-16","m":2,"c":"Hortifruti Natural","v":9270.0,"r":"Centro-Oeste/GO","g":"Hortifruti"},{"d":"2026-02-16","m":2,"c":"Supermercado Familia","v":20420.0,"r":"Norte/PA","g":"Hortifruti"},{"d":"2026-02-17","m":2,"c":"Atacado Uniao Comercial","v":65960.0,"r":"Sudeste/SP","g":"Mercearia"},{"d":"2026-02-17","m":2,"c":"Atacado Uniao Comercial","v":15020.0,"r":"Sudeste/SP","g":"Mercearia"},{"d":"2026-02-17","m":2,"c":"Adega Ponto do Vinho","v":9730.0,"r":"Nordeste/PE","g":"Bebidas"},{"d":"2026-02-17","m":2,"c":"Hortifruti Natural","v":13759.65,"r":"Centro-Oeste/GO","g":"Hortifruti"},{"d":"2026-02-17","m":2,"c":"Supermercado Familia","v":12990.0,"r":"Norte/PA","g":"Hortifruti"},{"d":"2026-02-18","m":2,"c":"Mercadao Central","v":10070.0,"r":"Nordeste/CE","g":"Mercearia"},{"d":"2026-02-19","m":2,"c":"Adega Ponto do Vinho","v":35190.0,"r":"Nordeste/PE","g":"Bebidas"},{"d":"2026-02-19","m":2,"c":"Adega Ponto do Vinho","v":13025.02,"r":"Nordeste/PE","g":"Bebidas"},{"d":"2026-02-19","m":2,"c":"Comercial Amazonas","v":500.0,"r":"Norte/AM","g":"Higiene e Limpeza"},{"d":"2026-02-20","m":2,"c":"Rede Supermercados Mais","v":12040.0,"r":"Sudeste/SP","g":"Congelados"},{"d":"2026-02-23","m":2,"c":"Adega Ponto do Vinho","v":28631.18,"r":"Nordeste/PE","g":"Bebidas"},{"d":"2026-02-24","m":2,"c":"Supermercado Familia","v":23368.59,"r":"Norte/PA","g":"Hortifruti"},{"d":"2026-02-25","m":2,"c":"Hortifruti Natural","v":10540.0,"r":"Centro-Oeste/GO","g":"Hortifruti"},{"d":"2026-02-25","m":2,"c":"Hortifruti Natural","v":20430.0,"r":"Centro-Oeste/GO","g":"Hortifruti"},{"d":"2026-02-26","m":2,"c":"Distribuidora Bebidas Lopes","v":15000.0,"r":"Sul/RS","g":"Bebidas"},{"d":"2026-02-26","m":2,"c":"Mercadao Central","v":11910.0,"r":"Nordeste/CE","g":"Mercearia"},{"d":"2026-02-28","m":2,"c":"Adega Ponto do Vinho","v":94000.0,"r":"Nordeste/PE","g":"Bebidas"},{"d":"2026-03-03","m":3,"c":"Rede Supermercados Mais","v":13770.0,"r":"Sudeste/SP","g":"Congelados"},{"d":"2026-03-05","m":3,"c":"Rede Farmacias Popular","v":2450.0,"r":"Sul/PR","g":"Higiene e Limpeza"},{"d":"2026-03-06","m":3,"c":"Supermercado Familia","v":41650.0,"r":"Norte/PA","g":"Hortifruti"},{"d":"2026-03-08","m":3,"c":"Adega Ponto do Vinho","v":12580.0,"r":"Nordeste/PE","g":"Bebidas"},{"d":"2026-03-10","m":3,"c":"Rede Farmacias Popular","v":1890.0,"r":"Sul/PR","g":"Higiene e Limpeza"},{"d":"2026-03-11","m":3,"c":"Adega Ponto do Vinho","v":10960.0,"r":"Nordeste/PE","g":"Bebidas"},{"d":"2026-03-11","m":3,"c":"Atacado Uniao Comercial","v":30131.94,"r":"Sudeste/SP","g":"Mercearia"},{"d":"2026-03-11","m":3,"c":"Mercadao Central","v":3870.0,"r":"Nordeste/CE","g":"Mercearia"},{"d":"2026-03-11","m":3,"c":"Rede Supermercados Mais","v":10440.0,"r":"Sudeste/SP","g":"Congelados"},{"d":"2026-03-11","m":3,"c":"Supermercado Familia","v":31990.0,"r":"Norte/PA","g":"Hortifruti"},{"d":"2026-03-12","m":3,"c":"Hortifruti Natural","v":20910.0,"r":"Centro-Oeste/GO","g":"Hortifruti"},{"d":"2026-03-12","m":3,"c":"Hortifruti Natural","v":7750.03,"r":"Centro-Oeste/GO","g":"Hortifruti"},{"d":"2026-03-13","m":3,"c":"Adega Ponto do Vinho","v":11612.3,"r":"Nordeste/PE","g":"Bebidas"},{"d":"2026-03-13","m":3,"c":"Atacado Uniao Comercial","v":46221.56,"r":"Sudeste/SP","g":"Mercearia"},{"d":"2026-03-16","m":3,"c":"Atacado Uniao Comercial","v":32690.0,"r":"Sudeste/SP","g":"Mercearia"},{"d":"2026-03-16","m":3,"c":"Hortifruti Natural","v":7490.0,"r":"Centro-Oeste/GO","g":"Hortifruti"},{"d":"2026-03-16","m":3,"c":"Rede Farmacias Popular","v":8650.0,"r":"Sul/PR","g":"Higiene e Limpeza"},{"d":"2026-03-17","m":3,"c":"Emporio Vila Nova Ltda","v":22271.71,"r":null,"g":null},{"d":"2026-03-17","m":3,"c":"Frigorifico Vale Verde","v":7260.0,"r":"Centro-Oeste/MT","g":"Congelados"},{"d":"2026-03-20","m":3,"c":"Adega Ponto do Vinho","v":30356.99,"r":"Nordeste/PE","g":"Bebidas"},{"d":"2026-03-23","m":3,"c":"Comercial Amazonas","v":380.0,"r":"Norte/AM","g":"Higiene e Limpeza"},{"d":"2026-03-23","m":3,"c":"Frigorifico Vale Verde","v":5330.0,"r":"Centro-Oeste/MT","g":"Congelados"},{"d":"2026-03-23","m":3,"c":"Hortifruti Natural","v":31290.0,"r":"Centro-Oeste/GO","g":"Hortifruti"},{"d":"2026-03-24","m":3,"c":"Adega Ponto do Vinho","v":18260.0,"r":"Nordeste/PE","g":"Bebidas"},{"d":"2026-03-24","m":3,"c":"Adega Ponto do Vinho","v":7336.41,"r":"Nordeste/PE","g":"Bebidas"},{"d":"2026-03-25","m":3,"c":"Hortifruti Natural","v":26900.0,"r":"Centro-Oeste/GO","g":"Hortifruti"},{"d":"2026-03-26","m":3,"c":"Distribuidora Bebidas Lopes","v":14320.0,"r":"Sul/RS","g":"Bebidas"},{"d":"2026-03-26","m":3,"c":"Supermercado Familia","v":9250.0,"r":"Norte/PA","g":"Hortifruti"},{"d":"2026-03-27","m":3,"c":"Supermercado Familia","v":12383.52,"r":"Norte/PA","g":"Hortifruti"},{"d":"2026-03-30","m":3,"c":"Adega Ponto do Vinho","v":63220.0,"r":"Nordeste/PE","g":"Bebidas"},{"d":"2026-03-30","m":3,"c":"Mercearia Sao Joaquim","v":20567.47,"r":null,"g":null},{"d":"2026-03-30","m":3,"c":"Supermercado Familia","v":29320.0,"r":"Norte/PA","g":"Hortifruti"},{"d":"2026-03-30","m":3,"c":"Supermercado Familia","v":68960.0,"r":"Norte/PA","g":"Hortifruti"},{"d":"2026-03-30","m":3,"c":"Supermercado Familia","v":13460.0,"r":"Norte/PA","g":"Hortifruti"},{"d":"2026-03-31","m":3,"c":"Adega Ponto do Vinho","v":43200.0,"r":"Nordeste/PE","g":"Bebidas"},{"d":"2026-04-01","m":4,"c":"Hortifruti Natural","v":8700.0,"r":"Centro-Oeste/GO","g":"Hortifruti"},{"d":"2026-04-01","m":4,"c":"Rede Supermercados Mais","v":4490.0,"r":"Sudeste/SP","g":"Congelados"},{"d":"2026-04-01","m":4,"c":"Rede Supermercados Mais","v":17930.0,"r":"Sudeste/SP","g":"Congelados"},{"d":"2026-04-02","m":4,"c":"Frigorifico Vale Verde","v":9590.0,"r":"Centro-Oeste/MT","g":"Congelados"},{"d":"2026-04-02","m":4,"c":"Supermercado Familia","v":34481.73,"r":"Norte/PA","g":"Hortifruti"},{"d":"2026-04-03","m":4,"c":"Atacado Uniao Comercial","v":29185.53,"r":"Sudeste/SP","g":"Mercearia"},{"d":"2026-04-03","m":4,"c":"Adega Ponto do Vinho","v":18340.0,"r":"Nordeste/PE","g":"Bebidas"},{"d":"2026-04-05","m":4,"c":"Rede Supermercados Mais","v":7170.0,"r":"Sudeste/SP","g":"Congelados"},{"d":"2026-04-06","m":4,"c":"Distribuidora Bebidas Lopes","v":38860.0,"r":"Sul/RS","g":"Bebidas"},{"d":"2026-04-06","m":4,"c":"Supermercado Familia","v":94000.0,"r":"Norte/PA","g":"Hortifruti"},{"d":"2026-04-06","m":4,"c":"Supermercado Familia","v":69409.13,"r":"Norte/PA","g":"Hortifruti"},{"d":"2026-04-07","m":4,"c":"Adega Ponto do Vinho","v":36220.0,"r":"Nordeste/PE","g":"Bebidas"},{"d":"2026-04-07","m":4,"c":"Supermercado Familia","v":14880.0,"r":"Norte/PA","g":"Hortifruti"},{"d":"2026-04-09","m":4,"c":"Hortifruti Natural","v":17380.0,"r":"Centro-Oeste/GO","g":"Hortifruti"},{"d":"2026-04-09","m":4,"c":"Rede Farmacias Popular","v":1410.0,"r":"Sul/PR","g":"Higiene e Limpeza"},{"d":"2026-04-10","m":4,"c":"Comercial Amazonas","v":450.0,"r":"Norte/AM","g":"Higiene e Limpeza"},{"d":"2026-04-10","m":4,"c":"Hortifruti Natural","v":22390.0,"r":"Centro-Oeste/GO","g":"Hortifruti"},{"d":"2026-04-10","m":4,"c":"Rede Farmacias Popular","v":1690.0,"r":"Sul/PR","g":"Higiene e Limpeza"},{"d":"2026-04-10","m":4,"c":"Rede Supermercados Mais","v":10450.0,"r":"Sudeste/SP","g":"Congelados"},{"d":"2026-04-10","m":4,"c":"Supermercado Familia","v":30898.49,"r":"Norte/PA","g":"Hortifruti"},{"d":"2026-04-13","m":4,"c":"Comercial Amazonas","v":1660.0,"r":"Norte/AM","g":"Higiene e Limpeza"},{"d":"2026-04-14","m":4,"c":"Hortifruti Natural","v":8891.33,"r":"Centro-Oeste/GO","g":"Hortifruti"},{"d":"2026-04-15","m":4,"c":"Atacado Uniao Comercial","v":50320.0,"r":"Sudeste/SP","g":"Mercearia"},{"d":"2026-04-15","m":4,"c":"Supermercado Familia","v":39712.69,"r":"Norte/PA","g":"Hortifruti"},{"d":"2026-04-17","m":4,"c":"Distribuidora Bebidas Lopes","v":26590.0,"r":"Sul/RS","g":"Bebidas"},{"d":"2026-04-17","m":4,"c":"Frigorifico Vale Verde","v":4090.0,"r":"Centro-Oeste/MT","g":"Congelados"},{"d":"2026-04-17","m":4,"c":"Rede Supermercados Mais","v":10620.0,"r":"Sudeste/SP","g":"Congelados"},{"d":"2026-04-17","m":4,"c":"Rede Supermercados Mais","v":4990.0,"r":"Sudeste/SP","g":"Congelados"},{"d":"2026-04-17","m":4,"c":"Supermercado Familia","v":33820.0,"r":"Norte/PA","g":"Hortifruti"},{"d":"2026-04-20","m":4,"c":"Rede Supermercados Mais","v":14340.0,"r":"Sudeste/SP","g":"Congelados"},{"d":"2026-04-20","m":4,"c":"Supermercado Familia","v":27860.0,"r":"Norte/PA","g":"Hortifruti"},{"d":"2026-04-21","m":4,"c":"Frigorifico Vale Verde","v":3820.0,"r":"Centro-Oeste/MT","g":"Congelados"},{"d":"2026-04-23","m":4,"c":"Adega Ponto do Vinho","v":9090.0,"r":"Nordeste/PE","g":"Bebidas"},{"d":"2026-04-25","m":4,"c":"Frigorifico Vale Verde","v":16220.0,"r":"Centro-Oeste/MT","g":"Congelados"},{"d":"2026-04-26","m":4,"c":"Comercial Amazonas","v":674.96,"r":"Norte/AM","g":"Higiene e Limpeza"},{"d":"2026-04-28","m":4,"c":"Adega Ponto do Vinho","v":25453.69,"r":"Nordeste/PE","g":"Bebidas"},{"d":"2026-04-28","m":4,"c":"Distribuidora Bebidas Lopes","v":19793.9,"r":"Sul/RS","g":"Bebidas"},{"d":"2026-04-28","m":4,"c":"Hortifruti Natural","v":6070.0,"r":"Centro-Oeste/GO","g":"Hortifruti"},{"d":"2026-04-29","m":4,"c":"Hortifruti Natural","v":92996.86,"r":"Centro-Oeste/GO","g":"Hortifruti"},{"d":"2026-05-01","m":5,"c":"Adega Ponto do Vinho","v":34070.0,"r":"Nordeste/PE","g":"Bebidas"},{"d":"2026-05-01","m":5,"c":"Adega Ponto do Vinho","v":16070.0,"r":"Nordeste/PE","g":"Bebidas"},{"d":"2026-05-01","m":5,"c":"Adega Ponto do Vinho","v":14070.0,"r":"Nordeste/PE","g":"Bebidas"},{"d":"2026-05-03","m":5,"c":"Supermercado Familia","v":28530.0,"r":"Norte/PA","g":"Hortifruti"},{"d":"2026-05-05","m":5,"c":"Atacado Uniao Comercial","v":9670.0,"r":"Sudeste/SP","g":"Mercearia"},{"d":"2026-05-06","m":5,"c":"Atacado Uniao Comercial","v":21930.0,"r":"Sudeste/SP","g":"Mercearia"},{"d":"2026-05-07","m":5,"c":"Atacado Uniao Comercial","v":21470.33,"r":"Sudeste/SP","g":"Mercearia"},{"d":"2026-05-07","m":5,"c":"Distribuidora Bebidas Lopes","v":8930.0,"r":"Sul/RS","g":"Bebidas"},{"d":"2026-05-07","m":5,"c":"Distribuidora Bebidas Lopes","v":19760.0,"r":"Sul/RS","g":"Bebidas"},{"d":"2026-05-07","m":5,"c":"Supermercado Familia","v":30480.0,"r":"Norte/PA","g":"Hortifruti"},{"d":"2026-05-08","m":5,"c":"Hortifruti Natural","v":27110.0,"r":"Centro-Oeste/GO","g":"Hortifruti"},{"d":"2026-05-08","m":5,"c":"Hortifruti Natural","v":17310.0,"r":"Centro-Oeste/GO","g":"Hortifruti"},{"d":"2026-05-08","m":5,"c":"Hortifruti Natural","v":19810.0,"r":"Centro-Oeste/GO","g":"Hortifruti"},{"d":"2026-05-11","m":5,"c":"Mercadao Central","v":27015.3,"r":"Nordeste/CE","g":"Mercearia"},{"d":"2026-05-11","m":5,"c":"Supermercado Familia","v":20910.0,"r":"Norte/PA","g":"Hortifruti"},{"d":"2026-05-12","m":5,"c":"Distribuidora Bebidas Lopes","v":12350.0,"r":"Sul/RS","g":"Bebidas"},{"d":"2026-05-13","m":5,"c":"Distribuidora Bebidas Lopes","v":4150.0,"r":"Sul/RS","g":"Bebidas"},{"d":"2026-05-13","m":5,"c":"Hortifruti Natural","v":12606.74,"r":"Centro-Oeste/GO","g":"Hortifruti"},{"d":"2026-05-14","m":5,"c":"Mercadao Central","v":12320.0,"r":"Nordeste/CE","g":"Mercearia"},{"d":"2026-05-14","m":5,"c":"Rede Supermercados Mais","v":6983.0,"r":"Sudeste/SP","g":"Congelados"},{"d":"2026-05-15","m":5,"c":"Distribuidora Bebidas Lopes","v":15890.0,"r":"Sul/RS","g":"Bebidas"},{"d":"2026-05-19","m":5,"c":"Distribuidora Bebidas Lopes","v":14809.45,"r":"Sul/RS","g":"Bebidas"},{"d":"2026-05-19","m":5,"c":"Mercadao Central","v":2696.29,"r":"Nordeste/CE","g":"Mercearia"},{"d":"2026-05-19","m":5,"c":"Rede Supermercados Mais","v":4170.0,"r":"Sudeste/SP","g":"Congelados"},{"d":"2026-05-20","m":5,"c":"Rede Supermercados Mais","v":6320.0,"r":"Sudeste/SP","g":"Congelados"},{"d":"2026-05-21","m":5,"c":"Adega Ponto do Vinho","v":37894.99,"r":"Nordeste/PE","g":"Bebidas"},{"d":"2026-05-21","m":5,"c":"Comercial Amazonas","v":380.0,"r":"Norte/AM","g":"Higiene e Limpeza"},{"d":"2026-05-21","m":5,"c":"Supermercado Familia","v":21320.0,"r":"Norte/PA","g":"Hortifruti"},{"d":"2026-05-21","m":5,"c":"Supermercado Familia","v":24330.0,"r":"Norte/PA","g":"Hortifruti"},{"d":"2026-05-22","m":5,"c":"Supermercado Familia","v":16480.0,"r":"Norte/PA","g":"Hortifruti"},{"d":"2026-05-25","m":5,"c":"Supermercado Familia","v":10990.0,"r":"Norte/PA","g":"Hortifruti"},{"d":"2026-05-27","m":5,"c":"Mercadao Central","v":7912.5,"r":"Nordeste/CE","g":"Mercearia"},{"d":"2026-05-29","m":5,"c":"Atacado Uniao Comercial","v":33365.19,"r":"Sudeste/SP","g":"Mercearia"},{"d":"2026-05-29","m":5,"c":"Rede Farmacias Popular","v":3694.5,"r":"Sul/PR","g":"Higiene e Limpeza"},{"d":"2026-05-31","m":5,"c":"Atacado Uniao Comercial","v":28860.0,"r":"Sudeste/SP","g":"Mercearia"},{"d":"2026-05-31","m":5,"c":"Rede Farmacias Popular","v":5240.0,"r":"Sul/PR","g":"Higiene e Limpeza"},{"d":"2026-06-01","m":6,"c":"Adega Ponto do Vinho","v":12610.0,"r":"Nordeste/PE","g":"Bebidas"},{"d":"2026-06-01","m":6,"c":"Rede Farmacias Popular","v":1130.0,"r":"Sul/PR","g":"Higiene e Limpeza"},{"d":"2026-06-04","m":6,"c":"Rede Supermercados Mais","v":3480.53,"r":"Sudeste/SP","g":"Congelados"},{"d":"2026-06-05","m":6,"c":"Atacado Uniao Comercial","v":18980.0,"r":"Sudeste/SP","g":"Mercearia"},{"d":"2026-06-05","m":6,"c":"Supermercado Familia","v":13830.0,"r":"Norte/PA","g":"Hortifruti"},{"d":"2026-06-05","m":6,"c":"Supermercado Familia","v":22030.0,"r":"Norte/PA","g":"Hortifruti"},{"d":"2026-06-08","m":6,"c":"Atacado Uniao Comercial","v":60570.0,"r":"Sudeste/SP","g":"Mercearia"},{"d":"2026-06-08","m":6,"c":"Frigorifico Vale Verde","v":5034.3,"r":"Centro-Oeste/MT","g":"Congelados"},{"d":"2026-06-08","m":6,"c":"Rede Supermercados Mais","v":18786.32,"r":"Sudeste/SP","g":"Congelados"},{"d":"2026-06-09","m":6,"c":"Atacado Uniao Comercial","v":50100.0,"r":"Sudeste/SP","g":"Mercearia"},{"d":"2026-06-10","m":6,"c":"Adega Ponto do Vinho","v":25375.67,"r":"Nordeste/PE","g":"Bebidas"},{"d":"2026-06-10","m":6,"c":"Adega Ponto do Vinho","v":26980.0,"r":"Nordeste/PE","g":"Bebidas"},{"d":"2026-06-12","m":6,"c":"Adega Ponto do Vinho","v":24000.0,"r":"Nordeste/PE","g":"Bebidas"},{"d":"2026-06-12","m":6,"c":"Atacado Uniao Comercial","v":12447.95,"r":"Sudeste/SP","g":"Mercearia"},{"d":"2026-06-12","m":6,"c":"Rede Supermercados Mais","v":8510.0,"r":"Sudeste/SP","g":"Congelados"},{"d":"2026-06-13","m":6,"c":"Supermercado Familia","v":30810.0,"r":"Norte/PA","g":"Hortifruti"},{"d":"2026-06-14","m":6,"c":"Hortifruti Natural","v":6110.0,"r":"Centro-Oeste/GO","g":"Hortifruti"},{"d":"2026-06-15","m":6,"c":"Supermercado Familia","v":32230.0,"r":"Norte/PA","g":"Hortifruti"},{"d":"2026-06-16","m":6,"c":"Mercadao Central","v":20500.0,"r":"Nordeste/CE","g":"Mercearia"},{"d":"2026-06-17","m":6,"c":"Mercadao Central","v":4910.0,"r":"Nordeste/CE","g":"Mercearia"},{"d":"2026-06-18","m":6,"c":"Frigorifico Vale Verde","v":12100.0,"r":"Centro-Oeste/MT","g":"Congelados"},{"d":"2026-06-18","m":6,"c":"Supermercado Familia","v":20630.0,"r":"Norte/PA","g":"Hortifruti"},{"d":"2026-06-19","m":6,"c":"Atacado Uniao Comercial","v":31180.0,"r":"Sudeste/SP","g":"Mercearia"},{"d":"2026-06-19","m":6,"c":"Atacado Uniao Comercial","v":11958.81,"r":"Sudeste/SP","g":"Mercearia"},{"d":"2026-06-19","m":6,"c":"Mercadao Central","v":9857.83,"r":"Nordeste/CE","g":"Mercearia"},{"d":"2026-06-21","m":6,"c":"Atacado Uniao Comercial","v":8820.0,"r":"Sudeste/SP","g":"Mercearia"},{"d":"2026-06-23","m":6,"c":"Comercial Amazonas","v":505.33,"r":"Norte/AM","g":"Higiene e Limpeza"},{"d":"2026-06-23","m":6,"c":"Mercadao Central","v":7230.0,"r":"Nordeste/CE","g":"Mercearia"},{"d":"2026-06-23","m":6,"c":"Rede Farmacias Popular","v":4260.0,"r":"Sul/PR","g":"Higiene e Limpeza"},{"d":"2026-06-23","m":6,"c":"Supermercado Familia","v":27770.0,"r":"Norte/PA","g":"Hortifruti"},{"d":"2026-06-24","m":6,"c":"Adega Ponto do Vinho","v":15000.0,"r":"Nordeste/PE","g":"Bebidas"},{"d":"2026-06-24","m":6,"c":"Hortifruti Natural","v":11085.02,"r":"Centro-Oeste/GO","g":"Hortifruti"},{"d":"2026-06-26","m":6,"c":"Comercial Amazonas","v":380.0,"r":"Norte/AM","g":"Higiene e Limpeza"},{"d":"2026-06-26","m":6,"c":"Supermercado Familia","v":13576.46,"r":"Norte/PA","g":"Hortifruti"},{"d":"2026-06-26","m":6,"c":"Supermercado Familia","v":18090.0,"r":"Norte/PA","g":"Hortifruti"},{"d":"2026-06-27","m":6,"c":"Adega Ponto do Vinho","v":8461.73,"r":"Nordeste/PE","g":"Bebidas"},{"d":"2026-06-27","m":6,"c":"Distribuidora Bebidas Lopes","v":43511.58,"r":"Sul/RS","g":"Bebidas"},{"d":"2026-06-28","m":6,"c":"Frigorifico Vale Verde","v":4830.0,"r":"Centro-Oeste/MT","g":"Congelados"},{"d":"2026-06-29","m":6,"c":"Atacado Uniao Comercial","v":8217.22,"r":"Sudeste/SP","g":"Mercearia"},{"d":"2026-06-29","m":6,"c":"Atacado Uniao Comercial","v":15710.0,"r":"Sudeste/SP","g":"Mercearia"},{"d":"2026-06-29","m":6,"c":"Atacado Uniao Comercial","v":29320.0,"r":"Sudeste/SP","g":"Mercearia"},{"d":"2026-06-29","m":6,"c":"Rede Farmacias Popular","v":3605.2,"r":"Sul/PR","g":"Higiene e Limpeza"},{"d":"2026-06-29","m":6,"c":"Supermercado Familia","v":7470.0,"r":"Norte/PA","g":"Hortifruti"},{"d":"2026-06-30","m":6,"c":"Adega Ponto do Vinho","v":24242.9,"r":"Nordeste/PE","g":"Bebidas"},{"d":"2026-06-30","m":6,"c":"Mercadao Central","v":5190.0,"r":"Nordeste/CE","g":"Mercearia"}];
+</script>
+<script>
+
+/* ---------------------------------------------------------------
+   Aurora — Painel de Caixa · vanilla JS, SVG charts, no deps
+   ------------------------------------------------------------- */
+const NAO_IDENT = 'Não identificado';
+const MONTH_NAMES = {1:'Janeiro',2:'Fevereiro',3:'Março',4:'Abril',5:'Maio',6:'Junho'};
+const MONTH_SHORT = {1:'Jan',2:'Fev',3:'Mar',4:'Abr',5:'Mai',6:'Jun'};
+
+const COLORS = { month:'#22d3ee', region:'#a78bfa', cat:'#34d399', client:'#fbbf24' };
+
+const rows = RAW_ROWS.map(r => ({
+  date:r.d, month:r.m, client:r.c, value:r.v,
+  region:r.r || NAO_IDENT, category:r.g || NAO_IDENT
+}));
+
+const fmtBRL = v => v.toLocaleString('pt-BR', {style:'currency', currency:'BRL', minimumFractionDigits:2, maximumFractionDigits:2});
+const fmtBRL0 = v => v.toLocaleString('pt-BR', {style:'currency', currency:'BRL', minimumFractionDigits:0, maximumFractionDigits:0});
+const fmtBRLCompact = v => v.toLocaleString('pt-BR', {style:'currency', currency:'BRL', notation:'compact', maximumFractionDigits:1});
+const fmtNum = v => v.toLocaleString('pt-BR');
+const fmtPct = v => v.toLocaleString('pt-BR', {minimumFractionDigits:1, maximumFractionDigits:1}) + '%';
+
+/* ---------- derive dimension lists ordered by total desc, Não identificado last ---------- */
+function orderedKeys(dim){
+  const tot = {};
+  rows.forEach(r => { tot[r[dim]] = (tot[r[dim]]||0) + r.value; });
+  let keys = Object.keys(tot);
+  keys = keys.filter(k => k !== NAO_IDENT).sort((a,b)=>tot[b]-tot[a]);
+  if (tot[NAO_IDENT] !== undefined) keys.push(NAO_IDENT);
+  return keys;
+}
+const REGIONS = orderedKeys('region');
+const CATEGORIES = orderedKeys('category');
+
+/* valid (region,category) combos actually present in the data */
+const validCombos = new Set();
+rows.forEach(r => validCombos.add(r.region + '||' + r.category));
+
+/* ---------- state ---------- */
+let activeRegions = new Set(REGIONS);
+let activeCategories = new Set(CATEGORIES);
+
+function enabledCategoriesFor(regionSet){
+  const out = new Set();
+  CATEGORIES.forEach(cat => {
+    for (const reg of regionSet){ if (validCombos.has(reg+'||'+cat)){ out.add(cat); break; } }
+  });
+  return out;
+}
+function enabledRegionsFor(categorySet){
+  const out = new Set();
+  REGIONS.forEach(reg => {
+    for (const cat of categorySet){ if (validCombos.has(reg+'||'+cat)){ out.add(reg); break; } }
+  });
+  return out;
+}
+
+function toggleRegion(key){
+  if (activeRegions.has(key)) activeRegions.delete(key); else activeRegions.add(key);
+  if (activeRegions.size === 0) activeRegions.add(key);
+  reconcile('region');
+  render();
+}
+function toggleCategory(key){
+  if (activeCategories.has(key)) activeCategories.delete(key); else activeCategories.add(key);
+  if (activeCategories.size === 0) activeCategories.add(key);
+  reconcile('category');
+  render();
+}
+function resetRegions(){ activeRegions = new Set(REGIONS); reconcile('region'); render(); }
+function resetCategories(){ activeCategories = new Set(CATEGORIES); reconcile('category'); render(); }
+
+function reconcile(changed){
+  // drop selections that became invalid given the other axis, without ever emptying a side
+  if (changed === 'region'){
+    const enabledCats = enabledCategoriesFor(activeRegions);
+    let next = new Set([...activeCategories].filter(c => enabledCats.has(c)));
+    if (next.size === 0) next = new Set(enabledCats);
+    activeCategories = next;
+  } else {
+    const enabledRegs = enabledRegionsFor(activeCategories);
+    let next = new Set([...activeRegions].filter(r => enabledRegs.has(r)));
+    if (next.size === 0) next = new Set(enabledRegs);
+    activeRegions = next;
+  }
+}
+
+/* ---------- filtered data ---------- */
+function filteredRows(){
+  return rows.filter(r => activeRegions.has(r.region) && activeCategories.has(r.category));
+}
+function sum(arr){ return arr.reduce((a,b)=>a+b.value,0); }
+
+/* ---------- text measuring / wrapping helpers (SVG) ---------- */
+const _measureCanvas = document.createElement('canvas');
+const _mctx = _measureCanvas.getContext('2d');
+function textWidth(str, sizePx, weight=600, family='Inter'){
+  _mctx.font = `${weight} ${sizePx}px ${family}`;
+  return _mctx.measureText(str).width;
+}
+// Wrap a label into at most 2 lines breaking only at spaces; shrink font if still too wide.
+function fitLabel(str, maxWidth, baseSize, weight=600){
+  let size = baseSize;
+  const tryFit = (s) => {
+    const words = s.split(' ');
+    if (words.length === 1) return textWidth(s, size, weight) <= maxWidth ? [s] : null;
+    // try whole line first
+    if (textWidth(s, size, weight) <= maxWidth) return [s];
+    // greedy 2-line wrap at word boundaries
+    let best = null;
+    for (let cut=1; cut<words.length; cut++){
+      const l1 = words.slice(0,cut).join(' ');
+      const l2 = words.slice(cut).join(' ');
+      const w1 = textWidth(l1,size,weight), w2 = textWidth(l2,size,weight);
+      if (w1<=maxWidth && w2<=maxWidth){ best=[l1,l2]; break; }
+    }
+    return best;
+  };
+  for (let i=0;i<14;i++){
+    const fit = tryFit(str);
+    if (fit) return {lines:fit, size};
+    size -= 1;
+    if (size < 8.5) {
+      // last resort: single line at min size, browser will just be tight but never mid-word break
+      return {lines:[str], size:8.5};
+    }
+  }
+  return {lines:[str], size};
+}
+
+/* ---------- SVG helpers ---------- */
+const SVGNS = 'http://www.w3.org/2000/svg';
+function el(tag, attrs={}){
+  const e = document.createElementNS(SVGNS, tag);
+  for (const k in attrs) e.setAttribute(k, attrs[k]);
+  return e;
+}
+
+/* ---------- Tooltip ---------- */
+const tooltipEl = document.getElementById('tooltip');
+function showTooltip(evt, html){
+  tooltipEl.innerHTML = html;
+  tooltipEl.classList.add('show');
+  positionTooltip(evt);
+}
+function positionTooltip(evt){
+  const pad = 16;
+  let x = evt.clientX + pad, y = evt.clientY + pad;
+  const rect = tooltipEl.getBoundingClientRect();
+  if (x + rect.width > window.innerWidth - 10) x = evt.clientX - rect.width - pad;
+  if (y + rect.height > window.innerHeight - 10) y = evt.clientY - rect.height - pad;
+  tooltipEl.style.left = x + 'px';
+  tooltipEl.style.top = y + 'px';
+}
+function hideTooltip(){ tooltipEl.classList.remove('show'); }
+
+/* ---------- count-up animation ---------- */
+function animateNumber(el, from, to, fmt, duration=900, onFrame){
+  const start = performance.now();
+  function step(t){
+    const p = Math.min(1, (t-start)/duration);
+    const eased = 1 - Math.pow(1-p, 3);
+    const val = from + (to-from)*eased;
+    el.textContent = fmt(val);
+    if (onFrame) onFrame();
+    if (p<1) requestAnimationFrame(step);
+    else { el.textContent = fmt(to); if (onFrame) onFrame(); }
+  }
+  requestAnimationFrame(step);
+}
+const _lastVals = {};
+function animateTo(id, to, fmt, onFrame){
+  const el = document.getElementById(id);
+  const from = _lastVals[id] !== undefined ? _lastVals[id] : 0;
+  animateNumber(el, from, to, fmt, 900, onFrame);
+  _lastVals[id] = to;
+}
+
+/* Shrink-to-fit for the hero number: never let it clip, on any viewport,
+   while still defaulting to the large clamp() size on comfortable widths. */
+function fitHeroNumber(){
+  const elx = document.getElementById('heroTotal');
+  if (!elx) return;
+  const parent = elx.parentElement;
+  const cs = getComputedStyle(parent);
+  const available = parent.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
+  elx.style.fontSize = '';
+  let size = parseFloat(getComputedStyle(elx).fontSize);
+  let guard = 0;
+  while (elx.scrollWidth > available && size > 26 && guard < 60){
+    size -= 1.5;
+    elx.style.fontSize = size + 'px';
+    guard++;
+  }
+}
+
+/* ================================================================
+   RENDER: filter chips
+   ================================================================ */
+function renderChips(){
+  const enabledCats = enabledCategoriesFor(activeRegions);
+  const enabledRegs = enabledRegionsFor(activeCategories);
+
+  const rC = document.getElementById('regionChips');
+  rC.innerHTML = '';
+  REGIONS.forEach(reg => {
+    const tot = sum(rows.filter(r=>r.region===reg));
+    const btn = document.createElement('button');
+    const isEnabled = enabledRegs.has(reg);
+    btn.className = 'chip' + (activeRegions.has(reg) && isEnabled ? ' active':'') + (isEnabled ? '' : ' disabled');
+    btn.innerHTML = `${reg}<span class="n">${fmtBRL0(tot)}</span>`;
+    btn.onclick = () => toggleRegion(reg);
+    rC.appendChild(btn);
+  });
+
+  const cC = document.getElementById('categoryChips');
+  cC.innerHTML = '';
+  CATEGORIES.forEach(cat => {
+    const tot = sum(rows.filter(r=>r.category===cat));
+    const btn = document.createElement('button');
+    const isEnabled = enabledCats.has(cat);
+    btn.className = 'chip' + (activeCategories.has(cat) && isEnabled ? ' active':'') + (isEnabled ? '' : ' disabled');
+    btn.innerHTML = `${cat}<span class="n">${fmtBRL0(tot)}</span>`;
+    btn.onclick = () => toggleCategory(cat);
+    cC.appendChild(btn);
+  });
+}
+
+/* ================================================================
+   RENDER: KPIs
+   ================================================================ */
+function renderKPIs(){
+  const f = filteredRows();
+  const total = sum(f);
+  const count = f.length;
+  const ticket = count ? total/count : 0;
+
+  animateTo('heroTotal', total, fmtBRL, fitHeroNumber);
+  document.getElementById('heroSub').innerHTML =
+    count ? `<b>${fmtNum(count)}</b> recebimentos no recorte atual · ticket médio de <b>${fmtBRL(ticket)}</b>` : 'Nenhum recebimento nesse recorte.';
+
+  animateTo('kpiCount', count, v=>fmtNum(Math.round(v)));
+  animateTo('kpiTicket', ticket, fmtBRL);
+  document.getElementById('kpiCountBar').style.width = (rows.length? (count/rows.length*100):0) + '%';
+  document.getElementById('kpiTicketBar').style.width = Math.min(100, (ticket/25000*100)) + '%';
+
+  // best month within filter
+  const byMonth = {};
+  f.forEach(r=>{ byMonth[r.month]=(byMonth[r.month]||0)+r.value; });
+  let bestM=null, bestV=-1;
+  Object.keys(byMonth).forEach(m=>{ if(byMonth[m]>bestV){bestV=byMonth[m]; bestM=m;} });
+  document.getElementById('kpiMonth').textContent = bestM ? MONTH_NAMES[bestM] : '—';
+  document.getElementById('kpiMonthFoot').textContent = bestM ? fmtBRL(bestV) : 'sem dados';
+
+  // largest client within filter
+  const byClient = {};
+  f.forEach(r=>{ byClient[r.client]=(byClient[r.client]||0)+r.value; });
+  let bestC=null, bestCV=-1;
+  Object.keys(byClient).forEach(c=>{ if(byClient[c]>bestCV){bestCV=byClient[c]; bestC=c;} });
+  document.getElementById('kpiClient').textContent = bestC || '—';
+  document.getElementById('kpiClientFoot').textContent = bestC ? fmtBRL(bestCV) : 'sem dados';
+}
+
+/* ================================================================
+   CHART: generic vertical bar chart (month / category own-dim)
+   ================================================================ */
+function barChartVertical(containerId, data, opts){
+  // data: [{key,label,value,highlighted}], opts: {color, valueForAxis}
+  const container = document.getElementById(containerId);
+  const W = container.clientWidth || 520, H = 250;
+  const padL = 8, padR = 8, padT = 26, padB = 46;
+  const plotW = W - padL - padR, plotH = H - padT - padB;
+  const n = data.length;
+  const gap = 0.34;
+  const slot = plotW / n;
+  const barW = slot * (1-gap);
+  const maxV = Math.max(1, ...data.map(d=>d.value)) * 1.22;
+
+  let svg = container.querySelector('svg');
+  if (!svg){
+    svg = el('svg', {viewBox:`0 0 ${W} ${H}`, preserveAspectRatio:'xMidYMid meet'});
+    container.appendChild(svg);
+  } else { svg.setAttribute('viewBox', `0 0 ${W} ${H}`); }
+  // baseline
+  let bg = svg.querySelector('.baseline');
+  if (!bg){ bg = el('line', {class:'baseline'}); svg.appendChild(bg); }
+  bg.setAttribute('x1', padL); bg.setAttribute('x2', W-padR);
+  bg.setAttribute('y1', padT+plotH); bg.setAttribute('y2', padT+plotH);
+  bg.setAttribute('stroke', 'rgba(255,255,255,0.10)');
+
+  data.forEach((d, i) => {
+    const cx = padL + slot*i + slot/2;
+    const h = maxV>0 ? (d.value/maxV)*plotH : 0;
+    const x = cx - barW/2;
+    const y = padT + plotH - h;
+    const dim = d.highlighted === false;
+
+    let g = svg.querySelector(`g[data-key="${cssEsc(d.key)}"]`);
+    if (!g){
+      g = el('g', {'data-key':cssEsc(d.key)});
+      const rect = el('rect', {class:'bar-rect', rx:8, ry:8});
+      const hit = el('rect', {class:'bar-hitbox'});
+      const val = el('text', {class:'bar-value', 'text-anchor':'middle', fill:'#eef1fb'});
+      const lbl = el('text', {class:'bar-label', 'text-anchor':'middle', fill:'#8790a8'});
+      g.appendChild(rect); g.appendChild(lbl); g.appendChild(val); g.appendChild(hit);
+      svg.appendChild(g);
+    }
+    const rect = g.querySelector('.bar-rect');
+    rect.setAttribute('x', x); rect.setAttribute('width', Math.max(2,barW));
+    rect.setAttribute('y', y); rect.setAttribute('height', Math.max(0,h));
+    rect.setAttribute('fill', opts.color);
+    rect.setAttribute('fill-opacity', dim ? 0.18 : 0.92);
+
+    const val = g.querySelector('.bar-value');
+    val.setAttribute('font-weight', 700);
+    val.setAttribute('font-family', "'Space Grotesk',sans-serif");
+    val.setAttribute('opacity', dim ? 0.35 : 1);
+    val.setAttribute('x', cx);
+    val.setAttribute('y', y-8);
+    val.textContent = '';
+    if (d.value > 0){
+      const full = fmtBRL0(d.value);
+      const compact = fmtBRLCompact(d.value);
+      const maxValW = slot*0.94;
+      const sizes = [11.5, 10, 9, 8.2];
+      let chosenSize = 0, chosenText = '';
+      for (const sz of sizes){
+        if (textWidth(full, sz, 700, "Inter") <= maxValW){ chosenSize = sz; chosenText = full; break; }
+      }
+      if (!chosenSize){
+        for (const sz of sizes){
+          if (textWidth(compact, sz, 700, "Inter") <= maxValW){ chosenSize = sz; chosenText = compact; break; }
+        }
+      }
+      val.setAttribute('font-size', chosenSize || 8.2);
+      val.textContent = chosenText;
+    } else {
+      val.setAttribute('font-size', 11.5);
+    }
+
+    const fit = fitLabel(d.label, slot*0.92, 11.5, 600);
+    const lbl = g.querySelector('.bar-label');
+    lbl.innerHTML='';
+    lbl.setAttribute('font-size', fit.size);
+    lbl.setAttribute('font-family', "'Inter',sans-serif");
+    lbl.setAttribute('font-weight', 600);
+    lbl.setAttribute('opacity', dim?0.45:0.82);
+    const lineH = fit.size*1.15;
+    const baseY = padT+plotH+18;
+    fit.lines.forEach((ln,li)=>{
+      const tsp = el('tspan',{});
+      tsp.setAttribute('x', cx);
+      tsp.setAttribute('y', baseY + li*lineH);
+      tsp.textContent = ln;
+      lbl.appendChild(tsp);
+    });
+
+    const hit = g.querySelector('.bar-hitbox');
+    hit.setAttribute('x', cx-slot/2); hit.setAttribute('width', slot);
+    hit.setAttribute('y', padT); hit.setAttribute('height', plotH+34);
+    hit.onmouseenter = (e)=> opts.onHover && opts.onHover(d, e);
+    hit.onmousemove = positionTooltip;
+    hit.onmouseleave = hideTooltip;
+    hit.onclick = opts.onClick ? ()=>opts.onClick(d) : null;
+    if (opts.onClick) hit.style.cursor='pointer';
+  });
+}
+
+/* ================================================================
+   CHART: generic horizontal bar chart (region / client)
+   ================================================================ */
+function barChartHorizontal(containerId, data, opts){
+  const container = document.getElementById(containerId);
+  const labelW = opts.labelWidth || 128;
+  const valueW = 92;
+  const W = container.clientWidth || 520;
+  const rowH = opts.rowH || 30;
+  const gap = 8;
+  const n = data.length;
+  const H = n*rowH + (n-1)*gap + 8;
+  const plotW = W - labelW - valueW;
+
+  let svg = container.querySelector('svg');
+  if (!svg){
+    svg = el('svg', {viewBox:`0 0 ${W} ${H}`, preserveAspectRatio:'xMidYMid meet'});
+    container.appendChild(svg);
+  } else { svg.setAttribute('viewBox', `0 0 ${W} ${H}`); }
+  svg.style.minHeight = H+'px';
+
+  const maxV = Math.max(1, ...data.map(d=>d.value)) * 1.12;
+
+  data.forEach((d,i) => {
+    const y = i*(rowH+gap);
+    const w = maxV>0 ? (d.value/maxV)*plotW : 0;
+    const dim = d.highlighted === false;
+
+    let g = svg.querySelector(`g[data-key="${cssEsc(d.key)}"]`);
+    if (!g){
+      g = el('g', {'data-key':cssEsc(d.key)});
+      g.appendChild(el('rect', {class:'bar-rect', rx:7, ry:7}));
+      g.appendChild(el('text', {class:'bar-label'}));
+      g.appendChild(el('text', {class:'bar-value'}));
+      g.appendChild(el('rect', {class:'bar-hitbox'}));
+      svg.appendChild(g);
+    }
+    const rect = g.querySelector('.bar-rect');
+    rect.setAttribute('x', labelW); rect.setAttribute('y', y);
+    rect.setAttribute('width', Math.max(2,w)); rect.setAttribute('height', rowH);
+    rect.setAttribute('fill', opts.color);
+    rect.setAttribute('fill-opacity', dim?0.16:0.90);
+
+    const fit = fitLabel(d.label, labelW-12, 12, 600);
+    const lbl = g.querySelector('.bar-label');
+    lbl.innerHTML='';
+    lbl.setAttribute('text-anchor','end');
+    lbl.setAttribute('font-family', "'Inter',sans-serif");
+    lbl.setAttribute('font-weight', 600);
+    lbl.setAttribute('font-size', fit.size);
+    lbl.setAttribute('fill', dim? '#5c6787':'#c7cee3');
+    const midY = y + rowH/2;
+    if (fit.lines.length===1){
+      lbl.setAttribute('x', labelW-10); lbl.setAttribute('y', midY+4);
+      lbl.textContent = fit.lines[0];
+    } else {
+      fit.lines.forEach((ln,li)=>{
+        const tsp = el('tspan',{});
+        tsp.setAttribute('x', labelW-10);
+        tsp.setAttribute('y', midY + (li===0? -3:10));
+        tsp.textContent = ln;
+        lbl.appendChild(tsp);
+      });
+    }
+
+    const val = g.querySelector('.bar-value');
+    val.setAttribute('x', labelW + Math.max(2,w) + 10);
+    val.setAttribute('y', y+rowH/2+4);
+    val.setAttribute('font-family', "'Space Grotesk',sans-serif");
+    val.setAttribute('font-size', 11.5); val.setAttribute('font-weight', 700);
+    val.setAttribute('fill', dim? '#5c6787':'#eef1fb');
+    val.setAttribute('opacity', dim?0.5:1);
+    val.textContent = d.value>0 ? fmtBRL0(d.value) : '';
+
+    const hit = g.querySelector('.bar-hitbox');
+    hit.setAttribute('x', 0); hit.setAttribute('y', y);
+    hit.setAttribute('width', W); hit.setAttribute('height', rowH);
+    hit.onmouseenter = (e)=> opts.onHover && opts.onHover(d,e);
+    hit.onmousemove = positionTooltip;
+    hit.onmouseleave = hideTooltip;
+    hit.onclick = opts.onClick ? ()=>opts.onClick(d) : null;
+    if (opts.onClick) hit.style.cursor='pointer';
+  });
+  // remove stale groups if data shrank
+  Array.from(svg.querySelectorAll('g[data-key]')).forEach(g=>{
+    const k = g.getAttribute('data-key');
+    if (!data.find(d=>cssEsc(d.key)===k)) g.remove();
+  });
+}
+
+function cssEsc(s){ return String(s).replace(/[^a-zA-Z0-9_-]/g,'_'); }
+
+/* ================================================================
+   RENDER: charts
+   ================================================================ */
+function renderCharts(){
+  const f = filteredRows();
+  const totalF = sum(f) || 1;
+
+  /* ---- Month chart (fully filtered) ---- */
+  const monthTot = {};
+  f.forEach(r=>{ monthTot[r.month]=(monthTot[r.month]||0)+r.value; });
+  const monthData = [1,2,3,4,5,6].map(m=>({
+    key:'m'+m, label:MONTH_SHORT[m], value:monthTot[m]||0, highlighted:true, month:m
+  }));
+  barChartVertical('chart-month', monthData, {
+    color:COLORS.month,
+    onHover:(d,e)=>{
+      const monthRows = f.filter(r=>r.month===d.month);
+      const byClient = {};
+      monthRows.forEach(r=>{ byClient[r.client]=(byClient[r.client]||0)+r.value; });
+      const top5 = Object.entries(byClient).sort((a,b)=>b[1]-a[1]).slice(0,5);
+      const tot = sum(monthRows);
+      let html = `<div class="tt-title">${MONTH_NAMES[d.month]} de 2026</div><div class="tt-value" style="color:${COLORS.month}">${fmtBRL(tot)}</div>`;
+      if (top5.length){
+        html += `<div class="tt-sub">Maiores clientes do mês</div>`;
+        top5.forEach(([c,v])=>{ html += `<div class="tt-row"><span><span class="tdot" style="background:${COLORS.month}"></span>${c}</span><b>${fmtBRL0(v)}</b></div>`; });
+      } else { html += `<div class="tt-sub">Sem recebimentos nesse recorte</div>`; }
+      showTooltip(e, html);
+    }
+  });
+
+  /* ---- Region chart: ALWAYS all regions; value filtered by category only; highlight = active region ---- */
+  const regionRowsBase = rows.filter(r => activeCategories.has(r.category));
+  const regionTot = {};
+  regionRowsBase.forEach(r=>{ regionTot[r.region]=(regionTot[r.region]||0)+r.value; });
+  const regionTotAll = sum(regionRowsBase) || 1;
+  const regionData = REGIONS.map(reg=>({
+    key:reg, label:reg, value:regionTot[reg]||0, highlighted:activeRegions.has(reg), region:reg
+  }));
+  document.getElementById('meta-region').textContent = activeCategories.size===CATEGORIES.length ? 'todas as categorias' : `${activeCategories.size} categoria(s) filtrada(s)`;
+  barChartHorizontal('chart-region', regionData, {
+    color:COLORS.region, labelWidth:118,
+    onHover:(d,e)=>{
+      const rr = regionRowsBase.filter(r=>r.region===d.region);
+      const byCat = {}; rr.forEach(r=>{ byCat[r.category]=(byCat[r.category]||0)+r.value; });
+      const topCat = Object.entries(byCat).sort((a,b)=>b[1]-a[1])[0];
+      const pct = d.value/regionTotAll*100;
+      let html = `<div class="tt-title">${d.region}</div><div class="tt-value" style="color:${COLORS.region}">${fmtBRL(d.value)}</div>`;
+      html += `<div class="tt-row"><span>Participação</span><b>${fmtPct(pct)}</b></div>`;
+      if (topCat) html += `<div class="tt-row"><span>Categoria principal</span><b>${topCat[0]}</b></div>`;
+      showTooltip(e, html);
+    },
+    onClick:(d)=> toggleRegion(d.region)
+  });
+
+  /* ---- Category chart: ALWAYS all categories; value filtered by region only; highlight = active category ---- */
+  const catRowsBase = rows.filter(r => activeRegions.has(r.region));
+  const catTot = {};
+  catRowsBase.forEach(r=>{ catTot[r.category]=(catTot[r.category]||0)+r.value; });
+  const catTotAll = sum(catRowsBase) || 1;
+  const catData = CATEGORIES.map(cat=>({
+    key:cat, label:cat, value:catTot[cat]||0, highlighted:activeCategories.has(cat), category:cat
+  }));
+  document.getElementById('meta-cat').textContent = activeRegions.size===REGIONS.length ? 'todas as regiões' : `${activeRegions.size} região(ões) filtrada(s)`;
+  barChartVertical('chart-cat', catData, {
+    color:COLORS.cat,
+    onHover:(d,e)=>{
+      const cr = catRowsBase.filter(r=>r.category===d.category);
+      const byClient = {}; cr.forEach(r=>{ byClient[r.client]=(byClient[r.client]||0)+r.value; });
+      const topClient = Object.entries(byClient).sort((a,b)=>b[1]-a[1])[0];
+      const pct = d.value/catTotAll*100;
+      let html = `<div class="tt-title">${d.category}</div><div class="tt-value" style="color:${COLORS.cat}">${fmtBRL(d.value)}</div>`;
+      html += `<div class="tt-row"><span>Participação</span><b>${fmtPct(pct)}</b></div>`;
+      if (topClient) html += `<div class="tt-row"><span>Maior cliente</span><b>${topClient[0]}</b></div>`;
+      showTooltip(e, html);
+    },
+    onClick:(d)=> toggleCategory(d.category)
+  });
+
+  /* ---- Client ranking: fully filtered, only non-zero, sorted desc ---- */
+  const byClient = {};
+  f.forEach(r=>{ byClient[r.client]=(byClient[r.client]||0)+r.value; });
+  const clientList = Object.entries(byClient).sort((a,b)=>b[1]-a[1]);
+  const clientMeta = {};
+  rows.forEach(r=>{ clientMeta[r.client] = {region:r.region, category:r.category}; });
+  const clientData = clientList.map(([c,v])=>({
+    key:c, label:c, value:v, highlighted:true, client:c
+  }));
+  const clientsWrap = document.getElementById('chart-client');
+  if (clientData.length===0){
+    clientsWrap.innerHTML = `<div style="padding:40px 10px;text-align:center;color:var(--ink-2);font-size:13px;">Sem clientes nesse recorte.</div>`;
+  } else {
+    if (clientsWrap.querySelector('div')) clientsWrap.innerHTML='';
+    barChartHorizontal('chart-client', clientData, {
+      color:COLORS.client, labelWidth:150, rowH: clientData.length>8?24:30,
+      onHover:(d,e)=>{
+        const meta = clientMeta[d.client] || {};
+        const pct = d.value/totalF*100;
+        let html = `<div class="tt-title">${d.client}</div><div class="tt-value" style="color:${COLORS.client}">${fmtBRL(d.value)}</div>`;
+        html += `<div class="tt-row"><span>Participação no recorte</span><b>${fmtPct(pct)}</b></div>`;
+        html += `<div class="tt-row"><span>Região</span><b>${meta.region||'—'}</b></div>`;
+        html += `<div class="tt-row"><span>Categoria</span><b>${meta.category||'—'}</b></div>`;
+        showTooltip(e, html);
+      }
+    });
+  }
+
+  /* empty state guard (belt and suspenders) */
+  const grid = document.getElementById('chartsGrid');
+  let emptyEl = document.getElementById('emptyState');
+  if (f.length===0){
+    if (!emptyEl){
+      emptyEl = document.createElement('div');
+      emptyEl.id='emptyState'; emptyEl.className='empty-state';
+      emptyEl.innerHTML = '<b>Sem recebimentos para essa combinação</b>Ajuste os filtros de região ou categoria para ver dados.';
+      grid.parentNode.insertBefore(emptyEl, grid);
+    }
+    grid.style.display='none';
+  } else {
+    if (emptyEl) emptyEl.remove();
+    grid.style.display='grid';
+  }
+}
+
+/* ================================================================
+   Insights tab static visuals
+   ================================================================ */
+function renderInsightVisuals(){
+  const monthTot = {};
+  rows.forEach(r=>{ monthTot[r.month]=(monthTot[r.month]||0)+r.value; });
+  const vals = [1,2,3,4,5,6].map(m=>monthTot[m]||0);
+  const max = Math.max(...vals);
+  const mb = document.getElementById('miniMonths');
+  mb.innerHTML='';
+  vals.forEach((v,i)=>{
+    const bar = document.createElement('i');
+    bar.style.height = '4px';
+    mb.appendChild(bar);
+    requestAnimationFrame(()=> setTimeout(()=>{ bar.style.height = (v/max*100)+'%'; }, 120+i*70));
+  });
+
+  const byClient = {};
+  rows.forEach(r=>{ byClient[r.client]=(byClient[r.client]||0)+r.value; });
+  const sorted = Object.entries(byClient).sort((a,b)=>b[1]-a[1]);
+  const total = sum(rows);
+  const top3 = sorted.slice(0,3);
+  const rest = total - sum(top3.map(([c,v])=>({value:v})));
+  const cbar = document.getElementById('concBar');
+  cbar.innerHTML='';
+  const segColors = ['#fbbf24','#f59e0b','#d97706'];
+  top3.forEach(([c,v],i)=>{
+    const seg = document.createElement('div');
+    seg.style.width='0%';
+    seg.style.background = segColors[i];
+    seg.textContent = fmtPct(v/total*100);
+    cbar.appendChild(seg);
+    requestAnimationFrame(()=> setTimeout(()=>{ seg.style.width=(v/total*100)+'%'; }, 150+i*90));
+  });
+  const restSeg = document.createElement('div');
+  restSeg.style.width='0%'; restSeg.style.background='rgba(255,255,255,0.10)'; restSeg.style.color='#c7cee3';
+  restSeg.textContent = 'Outros ' + fmtPct(rest/total*100);
+  cbar.appendChild(restSeg);
+  requestAnimationFrame(()=> setTimeout(()=>{ restSeg.style.width=(rest/total*100)+'%'; }, 420));
+}
+
+/* ================================================================
+   Master render + resize + tabs
+   ================================================================ */
+function render(){
+  renderChips();
+  renderKPIs();
+  renderCharts();
+}
+
+window.addEventListener('resize', debounce(()=>{ render(); fitHeroNumber(); }, 150));
+function debounce(fn, ms){ let t; return (...a)=>{ clearTimeout(t); t=setTimeout(()=>fn(...a), ms); }; }
+
+document.querySelectorAll('.filter-reset').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    if (btn.dataset.reset==='region') resetRegions(); else resetCategories();
+  });
+});
+
+const tabBtns = document.querySelectorAll('.tab-btn');
+const pill = document.getElementById('tabPill');
+function positionPill(btn){
+  btn.appendChild(pill);
+}
+tabBtns.forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    tabBtns.forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    positionPill(btn);
+    const tab = btn.dataset.tab;
+    document.getElementById('view-painel').classList.toggle('active', tab==='painel');
+    document.getElementById('view-insights').classList.toggle('active', tab==='insights');
+    document.getElementById('painelCredit').style.display = tab==='painel' ? 'block':'none';
+    if (tab==='insights') renderInsightVisuals();
+    if (tab==='painel') render();
+  });
+});
+
+window.addEventListener('DOMContentLoaded', ()=>{
+  positionPill(document.querySelector('.tab-btn.active'));
+  render();
+});
+
+</script>
+</body>
+</html>
