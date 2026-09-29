@@ -2,7 +2,7 @@
 
 Uma proposta de consultoria feita como apresentação de tela cheia, num único arquivo HTML, para ser aberta numa reunião e passada com as setas do teclado. A ideia central é que o cliente **arraste um controle e veja o retorno do projeto ser recalculado**, nessa tela e nas seguintes.
 
-**[Abrir a proposta](https://proposta-comercial-impeto.vercel.app)** (use as setas do teclado)
+**[Ver no ar](https://proposta-comercial-impeto.vercel.app)** (use as setas do teclado)
 
 ![Capa da proposta](img/tela-01.png)
 
