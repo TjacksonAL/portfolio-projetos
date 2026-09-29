@@ -497,58 +497,24 @@ function orderedKeys(dim){
 const REGIONS = orderedKeys('region');
 const CATEGORIES = orderedKeys('category');
 
-/* valid (region,category) combos actually present in the data */
-const validCombos = new Set();
-rows.forEach(r => validCombos.add(r.region + '||' + r.category));
-
-/* ---------- state ---------- */
+/* ---------- state ----------
+   Os dois filtros sao independentes: escolher uma regiao nao desabilita nem desmarca categorias, e vice-versa.
+   O resultado e a intersecao dos dois. Se ela ficar vazia, o painel mostra "Sem recebimentos para essa combinacao". */
 let activeRegions = new Set(REGIONS);
 let activeCategories = new Set(CATEGORIES);
 
-function enabledCategoriesFor(regionSet){
-  const out = new Set();
-  CATEGORIES.forEach(cat => {
-    for (const reg of regionSet){ if (validCombos.has(reg+'||'+cat)){ out.add(cat); break; } }
-  });
-  return out;
-}
-function enabledRegionsFor(categorySet){
-  const out = new Set();
-  REGIONS.forEach(reg => {
-    for (const cat of categorySet){ if (validCombos.has(reg+'||'+cat)){ out.add(reg); break; } }
-  });
-  return out;
-}
-
 function toggleRegion(key){
   if (activeRegions.has(key)) activeRegions.delete(key); else activeRegions.add(key);
-  if (activeRegions.size === 0) activeRegions.add(key);
-  reconcile('region');
+  if (activeRegions.size === 0) activeRegions.add(key);   // nunca deixa um filtro sem nenhuma opcao marcada
   render();
 }
 function toggleCategory(key){
   if (activeCategories.has(key)) activeCategories.delete(key); else activeCategories.add(key);
   if (activeCategories.size === 0) activeCategories.add(key);
-  reconcile('category');
   render();
 }
-function resetRegions(){ activeRegions = new Set(REGIONS); reconcile('region'); render(); }
-function resetCategories(){ activeCategories = new Set(CATEGORIES); reconcile('category'); render(); }
-
-function reconcile(changed){
-  // drop selections that became invalid given the other axis, without ever emptying a side
-  if (changed === 'region'){
-    const enabledCats = enabledCategoriesFor(activeRegions);
-    let next = new Set([...activeCategories].filter(c => enabledCats.has(c)));
-    if (next.size === 0) next = new Set(enabledCats);
-    activeCategories = next;
-  } else {
-    const enabledRegs = enabledRegionsFor(activeCategories);
-    let next = new Set([...activeRegions].filter(r => enabledRegs.has(r)));
-    if (next.size === 0) next = new Set(enabledRegs);
-    activeRegions = next;
-  }
-}
+function resetRegions(){ activeRegions = new Set(REGIONS); render(); }
+function resetCategories(){ activeCategories = new Set(CATEGORIES); render(); }
 
 /* ---------- filtered data ---------- */
 function filteredRows(){
@@ -643,9 +609,10 @@ function animateTo(id, to, fmt, onFrame){
 
 /* Shrink-to-fit for the hero number: never let it clip, on any viewport,
    while still defaulting to the large clamp() size on comfortable widths. */
-function fitHeroNumber(){
+function fitHeroNumber(texto){
   const elx = document.getElementById('heroTotal');
   if (!elx) return;
+  if (texto !== undefined) elx.textContent = texto;   // mede com o texto mais largo da animacao
   const parent = elx.parentElement;
   const cs = getComputedStyle(parent);
   const available = parent.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
@@ -662,33 +629,34 @@ function fitHeroNumber(){
 /* ================================================================
    RENDER: filter chips
    ================================================================ */
+/* Os botoes sao criados uma vez; depois so muda o estado "active". Recriar a cada toque fazia os botoes
+   piscarem e, no celular, perdia o toque em andamento. O valor de cada botao e o total geral da opcao,
+   por isso nao muda com o outro filtro. */
+function montarChips(idDoContainer, chaves, campo, onToggle){
+  const wrap = document.getElementById(idDoContainer);
+  chaves.forEach(chave => {
+    const total = sum(rows.filter(r => r[campo] === chave));
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'chip';
+    btn.dataset.chave = chave;
+    btn.innerHTML = `${chave}<span class="n">${fmtBRL0(total)}</span>`;
+    btn.onclick = () => onToggle(chave);
+    wrap.appendChild(btn);
+  });
+}
+function marcarChips(idDoContainer, ativos){
+  document.getElementById(idDoContainer).querySelectorAll('.chip').forEach(btn => {
+    btn.classList.toggle('active', ativos.has(btn.dataset.chave));
+  });
+}
 function renderChips(){
-  const enabledCats = enabledCategoriesFor(activeRegions);
-  const enabledRegs = enabledRegionsFor(activeCategories);
-
-  const rC = document.getElementById('regionChips');
-  rC.innerHTML = '';
-  REGIONS.forEach(reg => {
-    const tot = sum(rows.filter(r=>r.region===reg));
-    const btn = document.createElement('button');
-    const isEnabled = enabledRegs.has(reg);
-    btn.className = 'chip' + (activeRegions.has(reg) && isEnabled ? ' active':'') + (isEnabled ? '' : ' disabled');
-    btn.innerHTML = `${reg}<span class="n">${fmtBRL0(tot)}</span>`;
-    btn.onclick = () => toggleRegion(reg);
-    rC.appendChild(btn);
-  });
-
-  const cC = document.getElementById('categoryChips');
-  cC.innerHTML = '';
-  CATEGORIES.forEach(cat => {
-    const tot = sum(rows.filter(r=>r.category===cat));
-    const btn = document.createElement('button');
-    const isEnabled = enabledCats.has(cat);
-    btn.className = 'chip' + (activeCategories.has(cat) && isEnabled ? ' active':'') + (isEnabled ? '' : ' disabled');
-    btn.innerHTML = `${cat}<span class="n">${fmtBRL0(tot)}</span>`;
-    btn.onclick = () => toggleCategory(cat);
-    cC.appendChild(btn);
-  });
+  if (!document.getElementById('regionChips').children.length){
+    montarChips('regionChips', REGIONS, 'region', toggleRegion);
+    montarChips('categoryChips', CATEGORIES, 'category', toggleCategory);
+  }
+  marcarChips('regionChips', activeRegions);
+  marcarChips('categoryChips', activeCategories);
 }
 
 /* ================================================================
@@ -700,7 +668,13 @@ function renderKPIs(){
   const count = f.length;
   const ticket = count ? total/count : 0;
 
-  animateTo('heroTotal', total, fmtBRL, fitHeroNumber);
+  /* O tamanho do numero grande e ajustado uma vez, para o texto mais largo da contagem (trocando os
+     algarismos por 0, que ocupa o maximo). Ajustar a cada quadro fazia a fonte oscilar de 39 a 43,5px e a
+     pagina inteira tremer durante os 900ms da animacao. */
+  const heroDe = _lastVals.heroTotal !== undefined ? _lastVals.heroTotal : 0;
+  const heroTextoDe = fmtBRL(heroDe), heroTextoPara = fmtBRL(total);
+  fitHeroNumber((heroTextoDe.length >= heroTextoPara.length ? heroTextoDe : heroTextoPara).replace(/\d/g, '0'));
+  animateTo('heroTotal', total, fmtBRL);
   document.getElementById('heroSub').innerHTML =
     count ? `<b>${fmtNum(count)}</b> recebimentos no recorte atual · ticket médio de <b>${fmtBRL(ticket)}</b>` : 'Nenhum recebimento nesse recorte.';
 
@@ -1096,7 +1070,14 @@ function render(){
   renderCharts();
 }
 
-window.addEventListener('resize', debounce(()=>{ render(); fitHeroNumber(); }, 150));
+/* No celular, o "resize" tambem dispara quando a barra de endereco aparece ou some durante a rolagem.
+   So refaz a pagina quando a LARGURA muda de verdade. */
+let _larguraAnterior = window.innerWidth;
+window.addEventListener('resize', debounce(()=>{
+  if (window.innerWidth === _larguraAnterior) return;
+  _larguraAnterior = window.innerWidth;
+  render(); fitHeroNumber();
+}, 150));
 function debounce(fn, ms){ let t; return (...a)=>{ clearTimeout(t); t=setTimeout(()=>fn(...a), ms); }; }
 
 document.querySelectorAll('.filter-reset').forEach(btn=>{

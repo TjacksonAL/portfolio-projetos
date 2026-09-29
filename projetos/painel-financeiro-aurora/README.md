@@ -9,7 +9,7 @@ Painel de caixa do primeiro semestre de 2026 de uma distribuidora de alimentos e
 ## O que faz
 
 - **Indicadores no topo:** total recebido no semestre, número de recebimentos, ticket médio, melhor mês e maior cliente.
-- **Filtros por região e por categoria de produto**, com o valor de cada opção ao lado. Os indicadores e os gráficos do painel se recalculam ao filtrar.
+- **Filtros por região e por categoria de produto**, com o valor de cada opção ao lado. Os dois filtros são **independentes**: escolher uma região não desabilita nem desmarca categorias, e vice-versa. O painel mostra a interseção dos dois e, quando ela é vazia, avisa que não há recebimentos para aquela combinação. Os indicadores e os gráficos se recalculam ao filtrar.
 - **Gráficos** de caixa por mês e de caixa por região, desenhados em SVG.
 - **Aba Insights**, com a leitura do semestre em texto. Ela explica, por exemplo, que a queda de maio parece alarmante mas vem quase toda de um único cliente que pagou muito em abril, e mostra quais regiões ganharam ou perderam força de um trimestre para o outro. Traz só números absolutos, sem estimativa nem projeção.
 
