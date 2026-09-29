@@ -2,7 +2,8 @@
 <html lang="pt-BR">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="icon" href="data:,">
 <title>Praxis · Proposta comercial — Rede Ímpeto</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -34,6 +35,10 @@
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%;background:#04060C;overflow:hidden}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+/* body fixo e posicionado: e ele que recorta o palco de 1600px. Sem isso, nos navegadores de celular o palco
+   estica a janela virtual (975x2110 em vez de 390x844) e a escala sai errada. */
+body{position:fixed;inset:0;width:100%;height:100%}
 body{font-family:var(--sans);color:var(--txt);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
 
 /* ---------- palco fixo 1600x900 ---------- */
@@ -341,7 +346,7 @@ td.lead{color:var(--txt);font-weight:400}
 .nav{position:absolute;bottom:38px;right:168px;display:flex;gap:8px;z-index:6;opacity:0;transition:opacity .3s}
 #stage:hover .nav{opacity:1}
 .nav button{width:34px;height:34px;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.05);
-  backdrop-filter:blur(10px);color:var(--txt-2);cursor:pointer;font-size:13px;line-height:1;border-radius:999px;transition:.2s}
+  -webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);color:var(--txt-2);cursor:pointer;font-size:13px;line-height:1;border-radius:999px;transition:.2s}
 .nav button:hover{border-color:rgba(245,178,74,.55);color:var(--gold)}
 .nav button:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
 
@@ -373,9 +378,25 @@ td.lead{color:var(--txt);font-weight:400}
   .anim{transition:none!important;opacity:1;transform:none}
   *,*::before,*::after{animation:none!important}
 }
+
+/* ---------- aviso para girar o celular ----------
+   A proposta e um palco horizontal 16:9. Com o celular em pe ela ficaria pequena demais para ler. */
+#girar{display:none;position:fixed;inset:0;z-index:999;background:#04060C;flex-direction:column;align-items:center;
+  justify-content:center;gap:22px;padding:32px;text-align:center;font-family:var(--sans)}
+#girar svg{width:76px;height:76px;color:var(--gold);animation:girarDica 2.6s ease-in-out infinite}
+#girar strong{font:300 30px/1.15 var(--serif);color:var(--txt)}
+#girar span{font-size:16px;line-height:1.5;color:var(--txt-2);max-width:28ch}
+@keyframes girarDica{0%,20%{transform:rotate(0)}60%,100%{transform:rotate(-90deg)}}
+@media (orientation:portrait) and (max-width:820px){ #girar{display:flex} }
+@media (prefers-reduced-motion:reduce){ #girar svg{animation:none} }
 </style>
 </head>
 <body>
+<div id="girar" role="alert">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="7" y="2.5" width="10" height="19" rx="2.2"/><path d="M11 18.6h2"/></svg>
+  <strong>Gire o celular</strong>
+  <span>Esta proposta foi feita para a tela na horizontal. Vire o aparelho para ver.</span>
+</div>
 <div id="stage">
   <div id="glow">
     <div class="mood mood-neutral" data-mood="neutral"></div>
@@ -889,7 +910,10 @@ var ticks=slides.map(function(_,n){
 });
 
 function fit(){
-  var s=Math.min(window.innerWidth/1600, window.innerHeight/900);
+  /* mede o body (fixo, do tamanho da tela visivel) e nao window.inner*, que no celular
+     muda com a barra de endereco e com o zoom */
+  var w=document.body.clientWidth||window.innerWidth, h=document.body.clientHeight||window.innerHeight;
+  var s=Math.min(w/1600, h/900);
   stage.style.transform="translate(-50%,-50%) scale("+s+")";
 }
 
@@ -1423,6 +1447,8 @@ document.querySelectorAll(".draw").forEach(function(e){
   try{ e.style.setProperty("--len", Math.ceil(e.getTotalLength())); }catch(err){}
 });
 window.addEventListener("resize",fit);
+window.addEventListener("orientationchange",function(){ setTimeout(fit,120); });
+if(window.visualViewport) window.visualViewport.addEventListener("resize",fit);
 fit();
 range.value=PADRAO;
 pintar(PADRAO,false);
