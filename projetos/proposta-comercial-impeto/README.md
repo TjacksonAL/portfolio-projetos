@@ -1,8 +1,8 @@
-# Proposta comercial interativa
+# Proposta Comercial
 
 Uma proposta de consultoria feita como apresentação de tela cheia, num único arquivo HTML, para ser aberta numa reunião e passada com as setas do teclado. A ideia central é que o cliente **arraste um controle e veja o retorno do projeto ser recalculado**, nessa tela e nas seguintes.
 
-**[Abrir a proposta](https://tjacksonal.github.io/portfolio-projetos/projetos/proposta-comercial-impeto/proposta.html)** (use as setas do teclado)
+**[Abrir a proposta](https://proposta-comercial-impeto.vercel.app)** (use as setas do teclado)
 
 ![Capa da proposta](img/tela-01.png)
 
