@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Portfólio de projetos</title>
+<meta name="description" content="Ferramentas de dados, painéis, apresentações interativas e skills construídos com o Claude Code.">
+<style>
+  :root { --bg:#0b1020; --card:#131a30; --line:#243052; --ink:#e8ecf8; --mute:#9aa6c6; --acc:#7c9cff; }
+  @media (prefers-color-scheme: light) {
+    :root { --bg:#f5f7fc; --card:#ffffff; --line:#d9e0f0; --ink:#141a2e; --mute:#5b6787; --acc:#3557d6; }
+  }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--ink); font:16px/1.55 system-ui, -apple-system, "Segoe UI", sans-serif; }
+  main { max-width:860px; margin:0 auto; padding:56px 16px 72px; }
+  h1 { font-size:2rem; margin:0 0 8px; letter-spacing:-.02em; }
+  .lede { color:var(--mute); margin:0 0 36px; max-width:60ch; }
+  ul { list-style:none; padding:0; margin:0; display:grid; gap:12px; }
+  a.card { display:block; background:var(--card); border:1px solid var(--line); border-radius:12px; padding:18px 20px; color:inherit; text-decoration:none; }
+  a.card:hover, a.card:focus-visible { border-color:var(--acc); outline:none; }
+  .t { font-weight:650; }
+  .d { color:var(--mute); font-size:.94rem; margin-top:2px; }
+  .tag { color:var(--acc); font-size:.78rem; font-weight:600; letter-spacing:.06em; text-transform:uppercase; }
+  h2 { font-size:.85rem; letter-spacing:.08em; text-transform:uppercase; color:var(--mute); margin:36px 0 12px; }
+  footer { margin-top:40px; color:var(--mute); font-size:.9rem; }
+  footer a { color:var(--acc); }
+</style>
+</head>
+<body>
+<main>
+  <h1>Portfólio de projetos</h1>
+  <p class="lede">Ferramentas de dados, painéis, apresentações interativas e skills construídos com o Claude Code. Abaixo, as demos que abrem direto no navegador.</p>
+
+  <h2>Demos</h2>
+  <ul>
+    <li><a class="card" href="projetos/central-credito-cobranca/demo.html">
+      <div class="tag">Python + HTML</div>
+      <div class="t">Central de Crédito e Cobrança</div>
+      <div class="d">Cinco telas geradas de uma planilha de contas a receber: fila do dia, risco por cliente, previsão de caixa, régua de cobrança e relatório.</div>
+    </a></li>
+    <li><a class="card" href="projetos/proposta-comercial-impeto/proposta.html">
+      <div class="tag">Apresentação interativa</div>
+      <div class="t">Proposta comercial interativa</div>
+      <div class="d">Doze telas navegáveis por setas. O cliente arrasta um controle e o retorno do projeto é recalculado. Use as setas do teclado.</div>
+    </a></li>
+    <li><a class="card" href="projetos/painel-financeiro-aurora/painel.html">
+      <div class="tag">Painel</div>
+      <div class="t">Painel financeiro Aurora</div>
+      <div class="d">Caixa do semestre com filtros por região e categoria, gráficos em SVG e aba de insights.</div>
+    </a></li>
+  </ul>
+
+  <h2>No ar</h2>
+  <ul>
+    <li><a class="card" href="https://websitecampanha.vercel.app">
+      <div class="tag">Dados abertos do TSE</div>
+      <div class="t">Apura, painel eleitoral de Alagoas</div>
+      <div class="d">Resultados de 2022 e cenário de 2026, com bairros de Maceió.</div>
+    </a></li>
+  </ul>
+
+  <footer>Código, capturas de tela e explicações de cada projeto estão no <a href="https://github.com/TjacksonAL/portfolio-projetos">repositório no GitHub</a>. Empresas, clientes e valores dos exemplos são fictícios.</footer>
+</main>
+</body>
+</html>
