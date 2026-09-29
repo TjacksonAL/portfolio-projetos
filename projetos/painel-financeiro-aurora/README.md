@@ -2,7 +2,7 @@
 
 Painel de caixa do primeiro semestre de 2026 de uma distribuidora de alimentos e bebidas, a partir da planilha de controle de recebimentos: quanto entrou, de quem, de onde e em que mês.
 
-**[Abrir o painel](https://tjacksonal.github.io/portfolio-projetos/projetos/painel-financeiro-aurora/painel.html)**
+**[Ver no ar](https://painel-financeiro-aurora.vercel.app)**
 
 ![Painel de caixa](img/painel.png)
 
