@@ -2,7 +2,7 @@
 
 Uma página HTML gerada por Python a partir de uma planilha de contas a receber. Responde, em cinco telas, às perguntas que um dono de distribuidora faz todo dia: **quem eu ligo primeiro, onde está meu dinheiro, quanto entra nas próximas semanas, o que eu digo ao cliente e o que eu levo para a diretoria.**
 
-**[Abrir a demo](https://tjacksonal.github.io/portfolio-projetos/projetos/central-credito-cobranca/demo.html)** (arquivo único, dados fictícios de 12/08/2026)
+**[Abrir a demo](https://central-credito-cobranca.vercel.app)** (arquivo único, dados fictícios de 12/08/2026)
 
 ![Tela Hoje: fila de cobrança do dia](img/01-hoje.png)
 
